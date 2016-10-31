@@ -1,0 +1,34 @@
+script#orders(type="text/template")
+  .container.orders
+    dl
+      dt 订单总数：
+      dd {{ total }}
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th 活动ID
+          th.mdl-data-table__cell--non-numeric 姓名
+          th.mdl-data-table__cell--non-numeric 手机号
+          th 订单金额（元）
+          th.mdl-data-table__cell--non-numeric 订单状态
+          //- th.mdl-data-table__cell--non-numeric 支付方式
+          th.mdl-data-table__cell--non-numeric 商户订单号
+          th.mdl-data-table__cell--non-numeric 退款订单号
+          th.mdl-data-table__cell--non-numeric 创建日期
+      tbody
+        tr(v-for="order in orders")
+          td {{ order.id }}
+          td {{ order.activity_id }}
+          td.mdl-data-table__cell--non-numeric {{ order.name }}
+          td.mdl-data-table__cell--non-numeric
+            a(href="tel:{{ order.mobile }}") {{ order.mobile }}
+          td {{ order.amount | pricify }}
+          td.mdl-data-table__cell--non-numeric(title="微信支付反馈消息：{{ order.message }}") {{ order.status }}
+          //- td.mdl-data-table__cell--non-numeric {{ order.payment }}
+          td.mdl-data-table__cell--non-numeric {{ order.out_trade_no || '-' }}
+            small(v-if="order.pay_time") 支付日期：{{ order.pay_time | datify }}
+          td.mdl-data-table__cell--non-numeric {{ order.out_refund_no || '-' }}
+            small(v-if="order.refund_time") 退款日期：{{ order.refund_time | datify }}
+          td.mdl-data-table__cell--non-numeric {{ order.create_time | datify }}
+    pagination(:listrows="listrows", :page="page", :total="total")

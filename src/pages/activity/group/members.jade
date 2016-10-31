@@ -1,0 +1,34 @@
+script#group-members(type="text/template")
+  .container.group-members
+    .main
+      table.table
+        thead
+          tr
+            th 姓名
+            th 手机
+            th 参团时间
+            th 操作
+        tbody(v-if="group")
+          tr
+            td {{ group.leader_name }}
+              small （团长）
+            td
+              a(href="tel:{{ group.leader_mobile }}") {{ group.leader_mobile }}
+            td
+              small {{ group.create_time | formatDate }}
+            td
+              a(:class="{ disabled: !group.removable }", @click="remove") 移除
+          tr(v-for="joiner in group.joiners")
+            td {{ joiner.name }}
+            td
+              a(href="tel:{{ joiner.mobile }}") {{ joiner.mobile }}
+            td
+              small {{ joiner.time | formatDate }}
+            td
+              a(:class="{ disabled: !group.removable }", data-index="{{ $index }}", @click="remove") 移除
+        tbody(v-else)
+          tr
+            td(colspan="4") 暂无数据
+    .footer
+      .fixed
+        a.weui_btn.weui_btn_default(href="javascript:history.back();") 返回

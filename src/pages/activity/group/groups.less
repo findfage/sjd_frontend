@@ -1,0 +1,71 @@
+.group-groups {
+  b {
+    font-weight: normal;
+
+    margin-left: unit(4 / @root, rem);
+    margin-right: unit(4 / @root, rem);
+
+    color: @red;
+  }
+
+  .header {
+    padding: unit(16 / @root, rem);
+
+    background-color: #fff;
+
+    .weui_btn {
+      float: right;
+
+      width: 100%;
+    }
+  }
+
+  .groups {
+    border-bottom: @border;
+  }
+
+  .weui_tab_bd {
+    overflow: hidden;
+  }
+
+  .weui_media_box {
+    position: relative;
+
+    display: block;
+
+    > i {
+      font-size: unit(24 / @root, rem);
+
+      position: absolute;
+      top: 50%;
+      right: unit(16 / @root, rem);
+
+      color: @gray;
+      transform: translateY(-50%);
+    }
+  }
+
+  .weui_media_title {
+    > span {
+      margin-left: unit(16 / @root, rem);
+    }
+
+    > a {
+      font-size: unit(14 / @root, rem);
+
+      float: right;
+
+      > i {
+        margin-left: unit(8 / @root, rem);
+      }
+    }
+  }
+
+  .weui_media_desc {
+    margin-bottom: 0;
+
+    > span {
+      margin-left: unit(16 / @root, rem);
+    }
+  }
+}

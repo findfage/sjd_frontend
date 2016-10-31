@@ -1,0 +1,44 @@
+// Extend WeUI
+// --------------------------------------------------
+
+
+// Buttons
+// --------------------------------------------------
+
+a.weui_btn_primary,
+a.weui_btn_warn {
+  &:focus,
+  &:hover {
+    color: #fff;
+  }
+}
+
+// Media
+// --------------------------------------------------
+
+.weui_media_box {
+  .weui_media_desc {
+    font-size: unit(14 / @root, rem);
+    line-height: @line-height;
+
+    &.expanded {
+      -webkit-line-clamp: initial;
+    }
+  }
+
+  .weui_media_image {
+    font-size: unit(14 / @root, rem);
+    line-height: @line-height;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .weui_media_detail {
+    font-size: unit(14 / @root, rem);
+
+    color: @gray;
+  }
+}

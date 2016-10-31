@@ -1,0 +1,20 @@
+script#signup(type="text/template")
+  .mdl-grid.container.signup
+    form.mdl-cell.mdl-cell--12-col.mdl-cell--4-col-tablet.mdl-cell--2-offset-tablet.mdl-cell--4-col-desktop.mdl-cell--4-offset-desktop(role="form", @submit="submit")
+      .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+        input.mdl-textfield__input#mobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", title="请输入正确的手机号", required, v-model="mobile", v-el:mobile)
+        label.mdl-textfield__label(for="mobile") 手机号
+      .mdl-grid.mdl-grid--no-spacing
+        .mdl-cell.mdl-cell--6-col.mdl-cell--2-col-phone.mdl-cell--4-col-tablet
+          .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+            input.mdl-textfield__input#captcha(type="number", name="verify_code", pattern="^[0-9]{4,6}$", title="请输入正确的验证码", autocomplete="off", required, v-model="verify_code")
+            label.mdl-textfield__label(for="captcha") 验证码
+        .mdl-cell.mdl-cell--6-col.mdl-cell--2-col-phone.mdl-cell--4-col-tablet
+          button.mdl-button.mdl-js-button.mdl-button--primary(type="button", @click="sendCaptcha") 获取验证码
+      .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+        input.mdl-textfield__input#password(type="password", name="password", pattern="^\\S{6,20}$", title="密码最少6位，最多20位，不能包含空格", required, v-model="password")
+        label.mdl-textfield__label(for="password") 密码 （最少6位，最多20位，不能包含空格）
+      button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--primary.mdl-js-ripple-effect(type="submit") 注册
+      .footer
+        span 已经有账号？
+          a(v-link="{ name: 'signin' }") 立即登录

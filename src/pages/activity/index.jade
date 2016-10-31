@@ -1,0 +1,67 @@
+script#activities(type="text/template")
+  .container.activities
+    header.header
+      .weui_cell(v-if="user")
+        .weui_cell_bd.weui_cell_primary
+          span(v-if="user.organization") {{ user.organization }}（{{ user.mobile | asterisk }}）
+          span(v-else) {{ user.mobile | asterisk }}
+        .weui_cell_ft
+          a(v-link="{ name: 'categories' }") 制作活动
+          a(v-link="{ name: 'signout' }") 退出
+    .main
+      .activity-list(v-if="hasActivities")
+        .weui_panel(v-for="activity in activities")
+          .weui_panel_bd
+            a.weui_media_box.weui_media_appmsg(v-link="{ path: '/activity/' + activity.category + '/' + activity.id }")
+              .weui_media_hd
+                img.weui_media_appmsg_thumb(v-if="activity.share_img", :src="activity.share_img | imagify 120w_120h_4e_2o")
+                img.weui_media_appmsg_thumb(v-else, :src="'images/' + activity.category + '/index.jpg'")
+              .weui_media_bd
+                h4.weui_media_title {{ activity.share_title || activity.title }}
+                p.weui_media_desc {{ activity.share_content || activity.rules }}
+                small 最后修改时间：
+                  time(v-if="activity.update_time") {{ activity.update_time | formatDate }}
+                  time(v-else) {{ activity.create_time | formatDate }}
+          .weui_panel_ft
+            a(v-link="{ name: 'statistics', params: { id: activity.id }, query: { type: activity.type } }") 数据统计
+            a(v-link="{ name: activity.type === 4 ? 'group-groups' : 'joiners', params: { id: activity.id }, query: { type: activity.type } }") 报名表 / 兑奖
+            a(data-index="{{ $index }}", v-link="{ path: '/activity/' + activity.category + '/' + activity.id }", @click="showSharer") 分享活动
+            a(@click="showActionsheet", href="#actionsheet{{ $index }}") 更多操作
+          .weui_actionsheet_container(id="actionsheet{{ $index }}")
+            .weui_mask_transition(@click="hideActionsheet")
+            .weui_actionsheet
+              .weui_actionsheet_menu
+                a.weui_actionsheet_cell(v-link="{ path: '/activity/' + activity.category + '/' + activity.id + '/editor' }") 编辑
+                a.weui_actionsheet_cell(data-index="{{ $index }}", @click="removeActivity") 删除
+                a.weui_actionsheet_cell(v-link="{ path: '/activity/' + activity.category + '/' + activity.id + '/editor', query: { action: 'clone' } }") 复制活动
+              .weui_actionsheet_action
+                a.weui_actionsheet_cell(@click="hideActionsheet") 取消
+
+        //- 分享器
+        sharer(
+          v-if="sharer",
+          v-ref:sharer,
+          :data="sharer.data",
+          :desc="sharer.desc",
+          :img-url="sharer.imgUrl",
+          :link="sharer.link",
+          :title="sharer.title",
+          @hidden="hideSharer",
+        )
+
+        //- 瀑布流加载器
+        waterfall-flow-loader(
+          :url="loader.url",
+          :params="loader.params",
+          :done="load",
+          :fail="fail"
+        )
+
+      //- 空白提示
+      message(
+        title="暂无活动数据",
+        v-if="!hasActivities",
+        :primary="{ link: { name: 'categories' }, text: '马上制作'}",
+      )
+
+    footer.footer

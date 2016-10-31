@@ -1,0 +1,13 @@
+script#uploader(type="text/template")
+  .uploader-container
+    .uploader(:class="{ mini: mini, reverse: reverse }", v-for="image in images")
+      img(:src="image.url | imagify image.suffix", @load="load", v-if="image.url")
+      img(:src="placeholder", v-if="!image.url && placeholder")
+      button(type="button", aria-label="删除", @click="clear($index)", v-if="image.url && !preview && !mini") &times;
+      span(v-if="uploading && image.url")
+        span
+          i.fa.fa-spinner.fa-pulse
+          span(v-if="!mini") 图片上传中
+      label(v-show="!uploading && (!image.url || mini) && !preview")
+        input.visuallyhidden(type="file", data-index="{{ $index }}" accept="image/*", @change="read")
+        span(v-if="!mini", v-text="description")

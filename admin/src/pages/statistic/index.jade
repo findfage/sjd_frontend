@@ -1,0 +1,34 @@
+script#statistics(type="text/template")
+  .container.statistics
+    dl
+      dt 活动总数：
+      dd {{ total }}
+        small （不包含已删除的活动）
+      dt 总浏览量：
+      dd {{ stats.view_count }}
+      dt 总分享量：
+      dd {{ stats.share_count }}
+      dt 总报名量：
+      dd {{ stats.join_count }}
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th.mdl-data-table__cell--non-numeric 类型
+          th.mdl-data-table__cell--non-numeric 标题
+          th 浏览量
+          th 分享量
+          th 报名量
+          th.mdl-data-table__cell--non-numeric 操作
+      tbody
+        tr(v-for="activity in activities")
+          td {{ activity.id }}
+          td.mdl-data-table__cell--non-numeric {{ activity.category }}
+          td.mdl-data-table__cell--non-numeric
+            .mdl-data-table__cell-text {{ activity.title }}
+          td {{ activity.view_count }}
+          td {{ activity.share_count }}
+          td {{ activity.join_count }}
+          td.mdl-data-table__cell--non-numeric
+            a(:href="'/#!/activity/' + activity.type + '/' + activity.id", target="_blank") 查看
+    pagination(:listrows="listrows", :page="page", :total="total")

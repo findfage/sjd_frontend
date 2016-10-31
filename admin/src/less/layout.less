@@ -1,0 +1,54 @@
+// Layout
+// --------------------------------------------------
+
+.page-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2016;
+
+  width: 100%;
+  border-bottom: 1px solid lighten(@color, 10%);
+}
+
+.page-content {
+  overflow-x: auto;
+}
+
+.container {
+  padding: 16px;
+
+  > dl {
+    margin-top: 0;
+    margin-bottom: 16px;
+
+    > dt,
+    > dd {
+      display: inline;
+    }
+
+    > dt {
+      font-weight: normal;
+    }
+
+    > dd {
+      margin-left: 0;
+
+      color: @accent;
+
+       + dt {
+        margin-left: 24px;
+      }
+
+      > small {
+        color: @gray;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+}
+

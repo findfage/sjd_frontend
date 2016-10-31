@@ -1,0 +1,61 @@
+doctype html
+html(lang="zh-CN")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="x-ua-compatible", content="ie=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
+    title(v-text="page.title || site.title") 商家岛
+    meta(name="description", content="{{ page.description || site.description }}.")
+    link(rel="stylesheet", href="css/material.min.css")
+    link(rel="stylesheet", href="css/main.css?v#{version}")
+  body
+    .mdl-progress.mdl-js-progress.mdl-progress__indeterminate.page-progress(v-show="loading")
+    .mdl-layout.mdl-js-layout.mdl-layout--fixed-header(:class="{ 'mdl-layout--fixed-drawer': user }")
+      header.mdl-layout__header
+        .mdl-layout__header-row
+          .mdl-layout-title(v-text="page.title")
+          .mdl-layout-spacer
+          nav.mdl-navigation
+            //- a.mdl-navigation__link(href="/", target="_blank")
+            //-   i.material-icons open_in_new
+            //-   span(v-text="site.title")
+            a.mdl-navigation__link(v-link="{ name: 'signout' }", v-if="user")
+              i.material-icons exit_to_app
+              | 退出
+      .mdl-layout__drawer(v-if="user")
+        .mdl-layout-title(v-text="site.title")
+        nav.mdl-navigation
+          a.mdl-navigation__link(v-for="item in menu", v-link="{ path: item.link }")
+            i.material-icons {{ item.icon }}
+            | {{ item.name }}
+      main.mdl-layout__content
+        .page-content
+          router-view
+      footer.mdl-mini-footer
+        .mdl-mini-footer__left-section
+          .mdl-logo(v-text="copyright")
+        .mdl-mini-footer__right-section
+          .mdl-mini-footer__link-list
+            li: a(href="/", target="_blank", v-text="site.title")
+    snackbar
+    include ./pages/index
+    include ./pages/user/signin
+    include ./pages/user/signup
+    include ./pages/user/reset-password
+    include ./pages/customer/index
+    include ./pages/customer/activities
+    include ./pages/activity/index
+    include ./pages/order/index
+    include ./pages/withdrawal/index
+    include ./pages/statistic/index
+    include ./pages/complaint/index
+    include ./pages/error/404
+    include ./components/snackbar
+    include ./components/pagination
+    if development
+      script(src="js/material.js")
+      script(src="js/vue.js")
+    else
+      script(src="js/material.min.js")
+      script(src="js/vue.min.js")
+    script(src="js/main.js?v#{version}")

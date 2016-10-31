@@ -1,0 +1,29 @@
+script#group-guide(type="text/template")
+  .container.group-guide
+    .main
+      //- .weui_cells_title 拼团流程
+      //- .weui_cells
+      //-   .weui_cell
+      //-     .weui_cell_hd
+      //-       i 1
+      //-     .weui_cell_bd.weui_cell_primary 支付开团或参加团
+      //-   .weui_cell
+      //-     .weui_cell_hd
+      //-       i 2
+      //-     .weui_cell_bd.weui_cell_primary 等待好友参团支付
+      //-   .weui_cell
+      //-     .weui_cell_hd
+      //-       i 3
+      //-     .weui_cell_bd.weui_cell_primary 达到人数团购成功
+      .weui_article
+        h6 拼团说明：
+        ol
+          li 拼团介绍：由机构发起，使用微信拉好友入团，从而快速完成限定人数，享受让利优惠的团购活动。
+          li 团长：开团且该团第一个支付成功的人。
+          li 团员：通过链接参团成功的成员即为团员，可邀请好友参团，参团人数越多，优惠越多。
+          li 团购成功：团购时间内，参团人数达到设置最低人数，则组团成功。
+          li 团购失败：团购时间内，参团人数未达到设置最低人数，则组团失败，自行联系机构相关退款事宜。
+          li 其他说明：拼团仅支持微信支付，其他场景下支付将无法完成拼团，若因人为因素刷单，恶意开团、参团，机构有权解除参与资格。
+    .footer
+      .fixed
+        a.weui_btn.weui_btn_default(href="javascript:history.back();") 返回

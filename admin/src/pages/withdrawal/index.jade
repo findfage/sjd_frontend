@@ -1,0 +1,47 @@
+script#withdrawals(type="text/template")
+  .container.withdrawals
+    dl
+      dt 提现申请总数：
+      dd {{ total }}
+      dt 提现手续费率：
+      dd {{ chargeRate | percentage }}
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th 商家ID
+          th.mdl-data-table__cell--non-numeric 账号 / 手机号
+          th.mdl-data-table__cell--non-numeric 机构名称
+          th 活动ID
+          th 有效总金额（元）
+          th 当前提现金额（元）
+          th.mdl-data-table__cell--non-numeric 收款用户OpenID
+          th.mdl-data-table__cell--non-numeric 申请日期
+          th.mdl-data-table__cell--non-numeric 处理日期
+          th.mdl-data-table__cell--non-numeric 状态
+          th.mdl-data-table__cell--non-numeric 操作
+      tbody
+        tr(v-for="withdrawal in withdrawals")
+          td {{ withdrawal.id }}
+          td {{ withdrawal.user_id }}
+          td.mdl-data-table__cell--non-numeric
+            a(href="tel:{{ withdrawal.user_mobile }}") {{ withdrawal.user_mobile }}
+          td.mdl-data-table__cell--non-numeric {{ withdrawal.user_organization }}
+          td {{ withdrawal.activity_id }}
+          td {{ withdrawal.total_amount | pricify }}
+            small （已提现金额：{{ withdrawal.withdrew_amount | pricify }}）
+          td {{ withdrawal.amount | pricify }}
+            small （扣费后金额：{{ withdrawal.final_amount | pricify }}）
+          td.mdl-data-table__cell--non-numeric {{ withdrawal.open_id }}
+            small(title="该商家注册时登记的OpenID", v-if="withdrawal.user_open_id") （初始值：{{ withdrawal.user_open_id }}）
+          td.mdl-data-table__cell--non-numeric {{ withdrawal.create_time | datify }}
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="withdrawal.update_time") {{ withdrawal.update_time | datify }}
+            span(v-else) -
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="withdrawal.status") 已处理
+            span(v-else) 未处理
+          td.mdl-data-table__cell--non-numeric
+            a(href="javascript:void(0);", v-if="!withdrawal.status", @click="handle($index)") 标记为已处理
+            span(v-else) -
+    pagination(:listrows="listrows", :page="page", :total="total")

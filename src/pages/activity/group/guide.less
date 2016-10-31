@@ -1,0 +1,59 @@
+.group-guide {
+  .main {
+    margin-bottom: unit(16 / @root, rem);
+  }
+
+  .weui_cells {
+    font-size: unit(14 / @root, rem);
+  }
+
+  .weui_cell_hd {
+    > i {
+      font-size: unit(14 / @root, rem);
+      line-height: unit(24 / @root, rem);
+      font-style: normal;
+
+      display: inline-block;
+      width: unit(24 / @root, rem);
+      height: unit(24 / @root, rem);
+      margin-right: unit(8 / @root, rem);
+
+      color: #fff;
+      background-color: #04be02;
+      border-radius: 50%;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+
+  .weui_article {
+    font-size: unit(14 / @root, rem);
+
+    color: @gray-dark;
+
+    > h6 {
+      margin-bottom: unit(4 / @root, rem);
+    }
+
+    > ol {
+      padding-left: unit(15 / @root, rem);
+    }
+  }
+
+  .footer {
+    min-height: unit(75 / @root, rem);
+
+    .fixed {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      padding: unit(16 / @root, rem);
+
+      border-top: @border;
+      background-color: #fff;
+      box-shadow: 0 0 3px fade(#000, 10%);
+    }
+  }
+}

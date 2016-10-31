@@ -1,0 +1,29 @@
+// Statistics
+// --------------------------------------------------
+
+.statistics {
+  .statistics-list {
+    display: table;
+
+    width: 100%;
+  }
+
+  .statistics-item {
+    display: table-cell;
+
+    padding: unit(32 / @root, rem) unit(16 / @root, rem);
+
+    text-align: center;
+
+    > strong {
+      display: block;
+
+      font-size: unit(24 / @root, rem);
+      font-weight: normal;
+    }
+  }
+
+  table > thead > tr > th {
+    width: percentage(1 / 3);
+  }
+}

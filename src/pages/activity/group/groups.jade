@@ -1,0 +1,31 @@
+script#group-groups(type="text/template")
+  .container.group-groups
+    header.header
+      .grid
+        .cell-9
+          span 共<b>{{ total_number }}</b>人，预付总额：<b>{{ total_amount | pricify }}</b>元
+        .cell-3
+          a.weui_btn.weui_btn_mini.weui_btn_primary(v-if="withdrawable && total_amount", v-link="{ name: 'group-withdraw', query: { amount: total_amount } }") 提现
+          a.weui_btn.weui_btn_mini.weui_btn_primary.disabled(v-else, @click="alert") 提现
+    .weui_tab
+      .weui_navbar
+        a.weui_navbar_item(:class="{ weui_bar_item_on: !$route.query.state }", v-link="{ name: 'group-groups' }") 所有团
+        a.weui_navbar_item(:class="{ weui_bar_item_on: $route.query.state === 'complete' }", v-link="{ name: 'group-groups', query: { state: 'complete' } }") 已成团
+        a.weui_navbar_item(:class="{ weui_bar_item_on: $route.query.state === 'incomplete' }", v-link="{ name: 'group-groups', query: { state: 'incomplete' } }") 未成团
+      .weui_tab_bd
+        .groups
+          a.weui_media_box.weui_media_text(v-for="group in groups", v-link="{ name: 'group-members', query: { groupId: group.id } }")
+            h5.weui_media_title {{ group.joined_num }}人团
+              span 单价：<b>{{ group.current_price | pricify }}</b>元
+            p.weui_media_desc 团长：{{ group.leader_name }}
+              span 开团时间：
+                time {{ group.create_time | formatDate }}
+            i.fa.fa-angle-right
+
+        //- 瀑布流加载器
+        waterfall-flow-loader(
+          v-if="loader",
+          :url="loader.url",
+          :params="loader.params",
+          :done="load"
+        )

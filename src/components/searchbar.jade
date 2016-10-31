@@ -1,0 +1,12 @@
+script#searchbar(type="text/template")
+  .weui_searchbar_container
+    .weui_search_bar(:class="[focused ? 'weui_search_focusing' : '']")
+      form.weui_search_outer(@submit="submit")
+        .weui_search_inner
+          i.weui_icon_search
+          input#weui_search_input.weui_search_input(type="search", name="keyword", placeholder="{{ placeholder }}", required, @focus="focus", @blur="blur")
+          a.weui_icon_clear(@click="clear")
+        label.weui_search_text(for="weui_search_input")
+          i.weui_icon_search
+          span 搜索
+      //- a.weui_search_cancel(@click="clear") 取消

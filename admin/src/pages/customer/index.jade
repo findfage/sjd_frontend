@@ -1,0 +1,32 @@
+script#customers(type="text/template")
+  .container.customers
+    dl
+      dt 商家总数：
+      dd {{ total }}
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th.mdl-data-table__cell--non-numeric 账号 / 手机号
+          th.mdl-data-table__cell--non-numeric 机构名称
+          th.mdl-data-table__cell--non-numeric 所属行业
+          th.mdl-data-table__cell--non-numeric 所在地区
+          th.mdl-data-table__cell--non-numeric 注册日期
+          th.mdl-data-table__cell--non-numeric 状态
+          th.mdl-data-table__cell--non-numeric 操作
+      tbody
+        tr(v-for="customer in customers", :class="{'is-disabled': !customer.status}")
+          td {{ customer.id }}
+          td.mdl-data-table__cell--non-numeric
+            a(href="tel:{{ customer.mobile }}") {{ customer.mobile }}
+          td.mdl-data-table__cell--non-numeric {{ customer.organization }}
+          td.mdl-data-table__cell--non-numeric {{ customer.industry }}
+          td.mdl-data-table__cell--non-numeric {{ customer.province }} {{ customer.city }}
+          td.mdl-data-table__cell--non-numeric {{ customer.create_time | datify }}
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="customer.status") 正常
+            span(v-else) 已禁用
+          td.mdl-data-table__cell--non-numeric
+            a(v-link="{ name: 'customer-activities', params: { id: customer.id } }") 查看
+            a(href="javascript:void(0);", @click="toggle(customer)", v-text="customer.status ? '禁用' : '解禁'") 禁用
+    pagination(:listrows="listrows", :page="page", :total="total")

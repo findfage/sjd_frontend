@@ -1,0 +1,57 @@
+// Extend Material Design Lite
+// --------------------------------------------------
+
+.mdl-navigation__link {
+  .material-icons {
+    font-size: 18px;
+    margin-right: 4px;
+  }
+}
+
+.mdl-mini-footer {
+  min-height: 36px;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: @gray-dark;
+
+  .mdl-logo {
+    margin-bottom: 0;
+  }
+
+  .mdl-mini-footer__link-list {
+    line-height: 36px;
+  }
+}
+
+.mdl-layout--fixed-drawer.is-upgraded:not(.is-small-screen) {
+  > .mdl-mini-footer {
+    box-sizing: border-box;
+    width: ~"calc(100% - 240px)";
+    margin-left: 240px;
+  }
+}
+
+.mdl-data-table {
+  tbody {
+    a + a {
+      margin-left: 8px;
+    }
+  }
+
+  .is-deleted,
+  .is-disabled {
+    color: @gray;
+  }
+
+  .is-empty {
+    > td {
+      text-align: center;
+    }
+  }
+}
+
+.mdl-data-table__cell-text {
+  max-width: 320px;
+  min-width: 160px;
+  white-space: normal;
+}

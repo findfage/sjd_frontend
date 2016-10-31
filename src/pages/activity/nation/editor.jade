@@ -1,0 +1,113 @@
+script#nation-editor(type="text/template")
+  form.container.activity.activity-editor.nation.nation-editor(role="form", @submit="submit")
+    header.header
+      nav.menu
+        a.small(v-link="{ name: 'activities' }") 个人中心
+        a.small(v-link="{ name: 'nation' }", v-if="activity.id") 取消编辑
+
+    .main
+      //- Banner
+      .banner
+        .banner-header
+          img(src="images/nation/banner.jpg", alt="欢度国庆")
+          span.nation-day-word.initial
+        .banner-body
+          h1.title
+            textarea.dashed(name="title", placeholder="请输入活动标题", rows="4", maxlength="30", required, v-model="activity.title", v-if="editable")
+            template(v-else) {{ activity.title }}
+        .banner-footer
+          p.date 活动时间：
+            input.dashed.start-date(type="text", value="{{ activity.start_time | formatDate }}", placeholder="开始时间", maxlength="16", required, v-show="editable")
+            time(title="开始时间", v-show="!editable") {{ activity.start_time | formatDate }}
+            span 到
+            input.dashed.end-date(type="text", value="{{ activity.end_time | formatDate }}", placeholder="结束时间", maxlength="16", required, v-show="editable")
+            time(title="结束时间", v-show="!editable") {{ activity.end_time | formatDate }}
+
+      //- 活动状态
+      .card.status-bar
+        .grid
+          .cell-6
+            button.weui_btn.weui_btn_primary(type="button", disabled) 帮TA点亮
+          .cell-6
+            button.weui_btn.weui_btn_primary(type="button", disabled) 我要参加
+
+      //- 奖项设置
+      .card.prizes
+        h5 本期奖品
+          input.dashed(type="number", :min="locked ? activity.prizes.count : 1", max="9999999", v-if="editable", v-model="activity.prizes.count", lazy, number)
+          b(v-else) {{ activity.prizes.count }}
+          | 份
+        p 活动时间内召集
+          input.dashed(type="number", min="1", max="9999999", required, v-if="editable && !locked", v-model="activity.prizes.limit", lazy, number)
+          b(v-else) {{ activity.prizes.limit }}
+          | 个朋友点亮“欢度国庆”
+        p 即可
+          input.dashed(type="text", placeholder="请输入奖品描述", required, v-if="editable", v-model="activity.prizes.text", lazy)
+          b(v-else) {{ activity.prizes.text }}
+        uploader(
+          v-if="activated",
+          :error="prize.uploader.error",
+          :images="prize.uploader.images",
+          description="（请上传 1 张奖品图片，不上传则不显示）",
+          :preview="!editable",
+          :reverse="true",
+          :success="prize.uploader.success"
+        )
+
+      //- 活动规则
+      .card.rules
+        .card-header
+          h5.card-title 活动规则
+        .card-body
+          textarea.dashed(name="rules", placeholder="请输入活动规则", rows="9", maxlength="1000", required, v-model="activity.rules", v-if="editable")
+          template(v-else) {{{ activity.rules | formatText }}}
+
+      //- 领奖信息
+      .card.accept
+        .card-header
+          h5.card-title 领奖信息
+        .card-body
+          textarea.dashed(name="receive_info", placeholder="请输入领奖信息", rows="4", maxlength="1000", required, v-model="activity.receive_info", v-if="editable")
+          template(v-else) {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          h5.card-title 机构介绍
+        .card-body
+          textarea.dashed(name="host_info", placeholder="此处填写机构介绍，最多1000字，如果不填则不显示", rows="8", maxlength="1000", v-model="activity.host_info", v-if="editable")
+          p(v-else) {{{ activity.host_info | formatText }}}
+          uploader(
+            v-if="activated",
+            :error="intro.uploader.error",
+            :images="intro.uploader.images",
+            :maxlength="10",
+            description="（最多上传 10 张图片，不上传则不显示）",
+            :preview="!editable",
+            :reverse="true",
+            :success="intro.uploader.success"
+          )
+
+      //- 排行榜
+      .card.ranking-list
+        .card-header
+          h5.card-title 排行榜
+        .card-body
+          table
+            thead
+              tr
+                th 排名
+                th 姓名
+                th 召集数
+                th 完成时间
+            tbody
+              tr
+                td(colspan="4") 暂无数据
+
+    footer.footer
+      .container.fixed
+        .grid
+          .cell-6
+            button.weui_btn.weui_btn_default(type="button", @click="toggle") {{ editable ? '预览活动' : '返回编辑'}}
+          .cell-6
+            button.weui_btn.weui_btn_primary(type="submit") 保存活动

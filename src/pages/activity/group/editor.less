@@ -1,0 +1,98 @@
+.group-editor {
+  .banner {
+    .banner-body {
+      top: unit(8 / @root, rem);
+    }
+  }
+
+  .goods {
+    input {
+      margin-right: unit(4 / @root, rem);
+    }
+
+    .price {
+      input {
+        width: unit(160 / @root, rem);
+      }
+    }
+
+    .deposit {
+      input {
+        width: unit(100 / @root, rem);
+      }
+
+      small {
+        display: block;
+
+        color: @red;
+      }
+    }
+
+    .groups {
+      li {
+        font-size: unit(14 / @root, rem);
+
+        span {
+          position: relative;
+
+          > input {
+            width: unit(40 / @root, rem);
+          }
+
+          &:last-child {
+            padding-right: unit(40 / @root, rem);
+
+            > input {
+              width: unit(80 / @root, rem);
+            }
+          }
+
+          > button {
+            font-size: unit(18 / @root, rem);
+            line-height: unit(24 / @root, rem);
+
+            position: absolute;
+            top: 50%;
+            right: unit(8 / @root, rem);
+
+            width: unit(24 / @root, rem);
+            height: unit(24 / @root, rem);
+
+            color: @red;
+            border: 0;
+            background-color: #fff;
+            border-radius: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+
+    .note {
+      font-size: unit(14 / @root, rem);
+
+      margin-top: unit(8 / @root, rem);
+      margin-bottom: 0;
+
+      color: @gray-dark;
+    }
+  }
+
+  .hotline {
+    .card-body {
+      i {
+        margin-right: unit(4 / @root, rem);
+      }
+
+      input {
+        width: 80%;
+      }
+    }
+
+    .card-footer {
+      font-size: unit(14 / @root, rem);
+
+      color: @gray-dark;
+    }
+  }
+}

@@ -1,0 +1,303 @@
+// Moon
+// --------------------------------------------------
+
+.moon {
+  @main-color: #280f4a;
+  @moon-color: #fcbf56;
+  @images: "../images/moon/";
+
+  color: #fff;
+  background-color: @main-color;
+
+  b {
+    font-weight: normal;
+
+    margin-left: unit(2 / @root, rem);
+    margin-right: unit(2 / @root, rem);
+
+    color: @yellow;
+  }
+
+  .weui_btn_primary {
+    background-color: @orange;
+
+    &:focus {
+      background-color: darken(@orange, 10%);
+    }
+  }
+
+  .card {
+    margin-top: unit(16 / @root, rem);
+    margin-bottom: unit(16 / @root, rem);
+    padding: unit(16 / @root, rem);
+
+    background-color: #482668;
+
+    .card-title {
+      font-size: unit(18 / @root, rem);
+
+      position: relative;
+      padding-bottom: unit(8 / @root, rem);
+
+      color: @yellow;
+
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        content: " ";
+
+        height: 1px;
+        width: 1em;
+
+        background-color: @gray;
+      }
+    }
+  }
+
+  .banner {
+    @banner: "@{images}banner.jpg";
+    @banner-width: image-width(@banner) / 2;
+    @banner-height: image-height(@banner) / 2;
+
+    position: relative;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    .banner-header {
+      @keyframes blinking {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.5);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      position: relative;
+
+      > img {
+        display: block;
+      }
+
+      > span {
+        font-size: 0;
+
+        position: absolute;
+
+        display: block;
+
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+      }
+
+      > .blinking {
+        animation: blinking 2s ease;
+      }
+
+      > .haloing::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+        width: 200%;
+        height: 200%;
+        margin-top: -50%;
+        margin-left: -50%;
+
+        content: " ";
+        background-image: radial-gradient(fade(@moon-color, 30%), fade(@moon-color, 15%), fade(@moon-color, 0%), fade(@moon-color, 0%));
+        border-radius: 50%;
+        will-change: transform;
+        animation: blinking 2s infinite ease;
+      }
+
+      > .night-sky-moon {
+        @image: "@{images}moon.png";
+        @width: image-width(@image) / 2;
+        @height: image-height(@image) / 2;
+
+        top: unit(64 / @root, rem);
+        left: 50%;
+
+        width: unit(@width / @root, rem);
+        height: unit(@height / @root, rem);
+        margin-left: unit(-(@width / 2) / @root, rem);
+        will-change: top;
+        transition: top 1s ease;
+
+        &.initial {
+          top: unit(@banner-height / @root, rem);
+
+          visibility: hidden;
+        }
+
+        &.moon-1 {
+          background-image: url(@image);
+        }
+
+        &.moon-2 {
+          background-image: url("@{images}moon-2.png");
+        }
+
+        &.moon-3 {
+          background-image: url("@{images}moon-3.png");
+        }
+
+        &.moon-4 {
+          background-image: url("@{images}moon-4.png");
+        }
+
+        &.moon-5 {
+          background-image: url("@{images}moon-5.png");
+        }
+
+        &.moon-6 {
+          background-image: url("@{images}moon-6.png");
+        }
+
+        &.moon-7 {
+          background-image: url("@{images}moon-7.png");
+        }
+
+        &.moon-8 {
+          background-image: url("@{images}moon-8.png");
+        }
+      }
+    }
+
+    .banner-body,
+    .banner-footer {
+      position: absolute;
+      right: 0;
+      left: 0;
+    }
+
+    .banner-body {
+      top: percentage(148 / @banner-height);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      min-height: percentage(128 / @banner-height);
+      padding: unit(16 / @root, rem);
+    }
+
+    .banner-footer {
+      bottom: 0;
+
+      padding: unit(4 / @root, rem);
+
+      background-color: fade(#000, 50%);
+    }
+
+    .completed-list {
+      font-size: unit(14 / @root, rem);
+      line-height: unit(20 / @root, rem);
+
+      overflow: hidden;
+
+      height: unit(20 / @root, rem);
+
+      list-style: none;
+
+      > li {
+        width: 100%;
+      }
+    }
+  }
+
+  .status-bar {
+    margin-top: 0;
+
+    text-align: center;
+
+    .grid + .grid {
+      margin-top: unit(8 / @root, rem);
+    }
+  }
+
+  .prizes {
+    text-align: center;
+
+    h5 {
+      font-size: unit(18 / @root, rem);
+
+      margin-top: unit(8 / @root, rem);
+      margin-bottom: unit(8 / @root, rem);
+    }
+
+    p {
+      margin-bottom: unit(8 / @root, rem);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .ranking-list {
+    table {
+      th {
+        color: @yellow;
+      }
+
+      td {
+        text-align: center;
+      }
+    }
+
+    .waterfall-flow-loader {
+      color: #fff;
+    }
+  }
+
+
+  // Components
+  // -------------------------
+
+  .modal-join {
+    .modal-close {
+      color: @gray;
+    }
+
+    fieldset {
+      border-width: 0;
+
+      label {
+        font-size: unit(24 / @root, rem);
+
+        padding-top: unit(5 / @root, rem);
+        padding-right: 0;
+
+        color: @color;
+      }
+
+      input {
+        font-size: unit(16 / @root, rem);
+
+        width: 100%;
+        padding: unit(11 / @root, rem) unit(16 / @root, rem);
+
+        border: unit(1 / @root, rem) solid @main-color;
+        border-radius: unit(5 / @root, rem);
+
+        &:focus {
+          border-color: darken(@main-color, 10%);
+          box-shadow: 0 0 unit(2 / @root, rem) darken(@main-color, 10%);
+          outline: none;
+        }
+      }
+    }
+  }
+}

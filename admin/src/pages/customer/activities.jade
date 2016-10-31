@@ -1,0 +1,37 @@
+script#customer-activities(type="text/template")
+  .container.customer-activities
+    dl
+      dt 商家ID：
+      dd {{ $route.params.id }}
+      dt 商家活动总数：
+      dd {{ total }}
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th.mdl-data-table__cell--non-numeric 类型
+          th.mdl-data-table__cell--non-numeric 标题
+          th 参与人数
+          th 报名人数
+          th.mdl-data-table__cell--non-numeric 状态
+          th.mdl-data-table__cell--non-numeric 操作
+      tbody(v-if="activities.length")
+        tr(v-for="activity in activities", :class="{'is-deleted': !activity.status}")
+          td {{ activity.id }}
+          td.mdl-data-table__cell--non-numeric {{ activity.category }}
+          td.mdl-data-table__cell--non-numeric
+            .mdl-data-table__cell-text {{ activity.title }}
+          td {{ activity.partake_count }}
+          td {{ activity.sign_up_count }}
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="activity.status") 正常
+            span(v-else) 已删除
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="activity.status")
+              a(:href="'/#!/activity/' + activity.type + '/' + activity.id", target="_blank") 查看
+              a(href="javascript:void(0);", v-if="activity.id >= 10000", @click="remove($index)") 删除
+            span(v-else) -
+      tbody(v-else)
+        tr.is-empty
+          td.mdl-data-table__cell--non-numeric(colspan="7") 暂无数据
+    pagination(:listrows="listrows", :page="page", :total="total")

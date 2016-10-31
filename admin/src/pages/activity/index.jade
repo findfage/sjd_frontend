@@ -1,0 +1,36 @@
+script#activities(type="text/template")
+  .container.activities
+    dl
+      dt 活动总数：
+      dd {{ total }}
+        small （包含已删除的活动）
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th ID
+          th.mdl-data-table__cell--non-numeric 图标
+          th.mdl-data-table__cell--non-numeric 标题（分享标题）
+          th.mdl-data-table__cell--non-numeric 描述（分享描述）
+          th.mdl-data-table__cell--non-numeric 创建日期
+          th.mdl-data-table__cell--non-numeric 状态
+          th.mdl-data-table__cell--non-numeric 操作
+      tbody
+        tr(v-for="activity in activities", :class="{'is-deleted': !activity.status}")
+          td {{ activity.id }}
+          td.mdl-data-table__cell--non-numeric
+            img(:src="activity.share_img | imagify 60w_60h_4e_2o", v-if="activity.share_img")
+            img(v-else, :src="'/images/' + activity.category + '/index.jpg'")
+          td.mdl-data-table__cell--non-numeric
+            .mdl-data-table__cell-text {{ activity.title }}
+              small(v-if="activity.share_title") （{{ activity.share_title }}）
+          td.mdl-data-table__cell--non-numeric
+            .mdl-data-table__cell-text {{ activity.rules }}
+              small(v-if="activity.share_content") （{{ activity.share_content }}）
+          td.mdl-data-table__cell--non-numeric {{ activity.create_time | datify }}
+          td.mdl-data-table__cell--non-numeric {{ activity.state }}
+          td.mdl-data-table__cell--non-numeric
+            span(v-if="activity.status")
+              a(:href="'/#!/activity/' + activity.category + '/' + activity.id", target="_blank") 查看
+              a(href="javascript:void(0);", v-if="activity.id >= 10000", @click="remove($index)") 删除
+            span(v-else) -
+    pagination(:listrows="listrows", :page="page", :total="total")

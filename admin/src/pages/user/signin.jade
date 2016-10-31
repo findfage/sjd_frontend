@@ -1,0 +1,14 @@
+script#signin(type="text/template")
+  .mdl-grid.container.signin
+    form.mdl-cell.mdl-cell--12-col.mdl-cell--4-col-tablet.mdl-cell--2-offset-tablet.mdl-cell--4-col-desktop.mdl-cell--4-offset-desktop(role="form", @submit="submit")
+      .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+        input.mdl-textfield__input#mobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", required, v-model="mobile")
+        label.mdl-textfield__label(for="mobile") 手机号
+      .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+        input.mdl-textfield__input#password(type="password", name="password", pattern="^\\S{6,20}$", required, v-model="password")
+        label.mdl-textfield__label(for="password") 密码
+      button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--primary.mdl-js-ripple-effect(type="submit") 登录
+      .footer
+        //- span 还没有账号？
+        //-   a(v-link="{ name: 'signup' }") 免费注册
+        a.float-right(v-link="{ name: 'reset-password' }") 忘记密码？

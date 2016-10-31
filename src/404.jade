@@ -1,0 +1,28 @@
+doctype html
+html(lang="zh-CN")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="x-ua-compatible", content="ie=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
+    title 404 - 商家岛
+    meta(name="description", content="")
+    meta(name="keywords", content="")
+    meta(name="author", content="")
+    link(rel="stylesheet", href="css/font-awesome.min.css")
+    link(rel="stylesheet", href="css/weui.min.css")
+    link(rel="stylesheet", href="css/main.css")
+  body
+    .container.page-not-found
+      .weui_msg_container
+        .weui_msg
+          .weui_icon_area
+            i.weui_icon_msg.weui_icon_info
+          .weui_text_area
+            h2.weui_msg_title 404
+            p.weui_msg_desc 页面没找到
+          .weui_opr_area
+            p.weui_btn_area
+              a.weui_btn.weui_btn_primary(href="javascript:history.back();") 返回
+              //- a.weui_btn.weui_btn_default(href="/") 返回首页
+          .weui_extra_area
+            a(href="/") 返回首页

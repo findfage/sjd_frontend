@@ -1,0 +1,9 @@
+script#home(type="text/template")
+  .mdl-grid.container.home
+    .mdl-cell.mdl-cell--4-col.mdl-cell--4-col-phone.mdl-cell--4-col-tablet(v-for="card in cards")
+      .mdl-card.mdl-shadow--2dp
+        .mdl-card__title.mdl-card--expand
+          .mdl-card__title-text {{ card.title }}
+        .mdl-card__supporting-text {{ card.desc }}
+        .mdl-card__actions.mdl-card--border
+          a.mdl-button.mdl-button--primary.mdl-js-button.mdl-js-ripple-effect(v-link="{ path: card.link }") 查看

@@ -1,0 +1,70 @@
+.sharer {
+  .modal-title {
+    color: #999;
+    margin-bottom: unit(16 / @root, rem);
+  }
+
+  .modal-body {
+    padding-top: 0;
+    border-bottom: @border;
+  }
+
+  .share-title {
+    > input {
+      width: 100%;
+      padding: unit(8 / @root, rem);
+      border: 1px dashed @border-color;
+    }
+  }
+
+  .share-image {
+    position: relative;
+
+    display: block;
+    width: 80px;
+    height: 80px;
+
+    border: 1px dashed @border-color;
+    background-color: #eee;
+    cursor: pointer;
+
+    > img {
+      width: 100%;
+      max-height: 100%;
+    }
+
+    > span {
+      font-size: unit(12 / @root, rem);
+      line-height: 1;
+
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      padding: unit(4 / @root, rem);
+
+      color: #fff;
+      background-color: fade(#000, 50%);
+      text-align: center;
+    }
+  }
+
+  .share-content {
+    > textarea {
+      width: 100%;
+      padding: unit(8 / @root, rem);
+      border: 1px dashed @border-color;
+      resize: none;
+    }
+  }
+
+  &.shared {
+    background: fade(#000, 50%) url("../images/paper-plane.png") no-repeat center top;
+    background-size: 100% auto;
+
+    .modal-content {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+.snackbar {
+  position: fixed;
+  z-index: @zindex-snackbar;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: block;
+  display: flex;
+  transition: transform .3s ease;
+  transform: translate(0, 100%);
+
+  color: #fff;
+  background-color: @black;
+
+  will-change: transform;
+
+  &--primary {
+    background-color: @blue;
+  }
+
+  &--accent {
+    background-color: @red;
+  }
+
+  &--active {
+    transform: translate(0, 0);
+  }
+
+  @media (min-width: @screen-small-min) {
+    left: 50%;
+
+    min-width: 320px;
+    max-width: 640px;
+    border-top-left-radius: @border-radius;
+    border-top-right-radius: @border-radius;
+    transform: translate(-50%, 100%);
+
+    &--active {
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &__text {
+    padding: unit(16 / @root, rem);
+    flex-grow: 1;
+  }
+
+  &__action {
+    font-size: unit(24 / @root, rem);
+    line-height: 1;
+
+    padding: unit(16 / @root, rem);
+
+    color: @yellow;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+
+    &[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}

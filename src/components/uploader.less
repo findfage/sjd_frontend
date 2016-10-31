@@ -1,0 +1,143 @@
+.uploader {
+  position: relative;
+
+  + .uploader {
+    margin-top: unit(16 / @root, rem);
+  }
+
+  > img {
+    display: block;
+  }
+
+  > span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    color: #fff;
+    background-color: fade(#000, 50%);
+
+    > span {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+
+      transform: translateY(-50%);
+      text-align: center;
+    }
+
+    .fa {
+      margin-right: unit(5 / @root, rem);
+    }
+  }
+
+  > button {
+    font-size: unit(18 / @root, rem);
+    line-height: unit(32 / @root, rem);
+
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    width: unit(32 / @root, rem);
+    height: unit(32 / @root, rem);
+
+    color: #fff;
+    background-color: fade(#000, 50%);
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 unit(3 / @root, rem) fade(@gray, 50%);
+    cursor: pointer;
+  }
+
+  > label {
+    position: relative;
+
+    display: block;
+    min-height: unit(150 / @root, rem);
+
+    border: 1px dashed @gray;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      content: " ";
+      transform: translate(-50%, -50%);
+
+      background-color: @gray;
+    }
+
+    &::before {
+      width: unit(8 / @root, rem);
+      height: unit(48 / @root, rem);
+    }
+
+    &::after {
+      width: unit(48 / @root, rem);
+      height: unit(8 / @root, rem);
+    }
+
+    > span {
+      font-size: unit(12 / @root, rem);
+      line-height: 1;
+
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      padding: unit(16 / @root, rem);
+
+      color: @gray;
+      text-align: center;
+    }
+  }
+
+  &.reverse {
+    > label {
+      border-color: #fff;
+
+      &::before,
+      &::after {
+        background-color: #fff;
+      }
+
+      > span {
+        color: @gray-lightest;
+      }
+    }
+  }
+
+  &.mini {
+    background-color: #fff;
+
+    > label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      min-height: 0;
+
+      background-color: fade(#000, 50%);
+
+      &::before {
+        width: 2px;
+        height: 50%;
+      }
+
+      &::after {
+        width: 50%;
+        height: 2px;
+      }
+    }
+  }
+}

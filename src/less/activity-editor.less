@@ -1,0 +1,82 @@
+// Activity Editor
+// --------------------------------------------------
+
+.activity-editor {
+  textarea {
+    display: block;
+  }
+
+  .dashed {
+    font-size: inherit;
+    line-height: 1.1;
+
+    width: 100%;
+    padding: unit(8 / @root, rem);
+
+    color: inherit;
+    background-color: transparent;
+    border: 1px dashed @gray;
+
+    text-align: inherit;
+
+    .placeholder(@gray);
+
+    &.reverse {
+      color: #fff;
+      border-color: #fff;
+
+      .placeholder(@gray-lightest);
+    }
+
+    &[type="number"] {
+      padding-right: 0;
+    }
+  }
+
+  .banner {
+    .title {
+      textarea {
+        resize: none;
+      }
+    }
+
+    .date {
+      > input {
+        font-size: unit(12 / @root, rem);
+
+        width: unit(110 / @root, rem);
+        padding-right: 0;
+        padding-left: 0;
+
+        color: @yellow;
+      }
+    }
+
+    .note {
+      font-size: unit(12 / @root, rem);
+      line-height: 1;
+
+      margin-top: unit(4 / @root, rem);
+      margin-bottom: 0;
+
+      text-align: right;
+    }
+  }
+
+  .prizes,
+  .about {
+    textarea {
+      margin-bottom: unit(16 / @root, rem);
+    }
+  }
+
+  .footer {
+    min-height: unit(74 / @root, rem);
+
+    .container {
+      padding: unit(16 / @root, rem);
+
+      background-color: #fff;
+    }
+  }
+}

@@ -1,0 +1,158 @@
+script#vote(type="text/template")
+  .container.activity.vote(v-if="activity", :class="{ sample: activityId === 1 }")
+    header.header
+      nav.menu
+        a(v-link="{ name: 'complaint', params: { id: activityId }, query: { next: $route.path } }") 投诉
+        a.small(v-if="user", v-link="{ name: 'activities' }") 个人中心
+        a(v-if="user && user.id === activity.user_id", v-link="{ name: 'vote-editor' }") 编辑
+      ul.stats(v-if="statistics")
+        li
+          b {{ statistics.view_count }}
+          | 人查看
+        li
+          b {{ statistics.share_count }}
+          | 人分享
+        li
+          b {{ statistics.join_count }}
+          | 人报名
+
+    .main
+
+      //- Banner
+      .banner
+        .banner-header
+          img.visuallyhidden(src="images/vote/voting.png")
+          img(src="images/vote/banner.jpg", alt="超级加油")
+        .banner-body
+          h1.title {{ activity.title }}
+        .banner-footer
+          p.date 活动时间：
+            time(title="开始时间") {{ activity.start_time | formatDate }}
+            span 到
+            time(title="结束时间") {{ activity.end_time | formatDate }}
+
+      //- 活动状态
+      .status-bar
+        table(v-if="personal")
+          tbody
+            tr
+              td {{ participant.name }}
+              td {{ participant.vote_count }}票
+              td 第{{ participant.ranking }}名
+        button.button(type="button", v-if="button.disabled", disabled) {{ button.text }}
+        button.button(type="button", @click="click", v-else) {{ button.text }}
+
+      //- 活动规则
+      .card.rules
+        .card-header
+          .card-title 活动规则
+        .card-body
+          p {{{ activity.rules | formatText }}}
+
+      //- 奖项设置
+      .card.prizes
+        .card-header
+          .card-title 奖项设置
+        .card-body
+          template(v-if="activity.prizes.text")
+            p {{{ activity.prizes.text | formatText }}}
+            p(v-for="image in activity.prizes.images")
+              img(v-if="image", :src="image | imagify 640w_2o")
+          template(v-else)
+            p.prize-note 根据所得票数排名，可获得以下奖品
+            .prize(v-for="prize in activity.prizes")
+              .prize-header
+                img(:src="prize.image | imagify 80w_80h_4e_2o", alt="{{ prize.name }}", v-if="prize.image")
+                img(src="images/gift.jpg", alt="{{ prize.name }}", v-else)
+              .prize-body
+                h5.prize-title {{ prize.name }}
+                p.prize-desc {{ prize.desc }}
+              .prize-footer {{ prize.count }}
+
+      //- 领奖信息
+      .card.accept
+        .card-header
+          .card-title 领奖信息
+        .card-body
+          p {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          .card-title 机构介绍
+        .card-body
+          p(v-if="activity.host_info") {{{ activity.host_info | formatText }}}
+          p(v-for="image in activity.host_img")
+            img(v-if="image", :src="image | imagify 640w_2o")
+
+      //- 排行榜
+      .card.ranking-list
+        .card-header
+          .card-title 排行榜
+        .card-body
+          table
+            thead
+              tr
+                th 排名
+                th 姓名
+                th 票数
+            tbody(v-if="joiners.length")
+              tr(v-for="joiner in joiners")
+                td {{ joiner.ranking }}
+                td {{ joiner.name }}
+                td {{ joiner.vote_count }}
+            tbody(v-else)
+              tr
+                td(colspan="3") 暂无数据
+          waterfall-flow-loader(v-if="loader", :url="loader.url", :param="loader.params", :listrows="30", :done="load")
+
+      //- 对话框：参加
+      .modal.fade.modal-join(:class="{ in: joining, out: !visible }")
+        form.modal-content(role="form", @submit="join")
+          .modal-header
+            button.modal-close(type="button", @click="close('joining')") &times;
+          .modal-body
+            fieldset.grid
+              label.cell-3(for="inputName") 姓名
+              .cell-9
+                input#inputName(type="text", name="name", placeholder="请输入您的真实姓名", required, v-model="newJoiner.name")
+            fieldset.grid
+              label.cell-3(for="inputMobile") 手机
+              .cell-9
+                input#inputMobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", title="请输入正确的手机号", placeholder="请输入您的手机号码", required, v-model="newJoiner.mobile")
+          .modal-footer
+            button.button(type="submit") 提交
+
+      //- 对话框：投票
+      .modal.fade.modal-vote(:class="{ in: voting, out: !visible }", @click="close('voting')")
+        img(src="images/vote/voting.png", alt="您已成功为TA投票")
+
+      //- 分享器
+      sharer(
+        v-if="sharer",
+        v-ref:sharer,
+        :auto-share="sharer.autoShare",
+        :auto-show="sharer.autoShow",
+        :data="sharer.data",
+        :desc="sharer.desc",
+        :img-url="sharer.imgUrl",
+        :link="sharer.link",
+        :title="sharer.title",
+      )
+
+    footer.footer
+      .footer-content.fixed
+        .action-bar
+          a(href="#!/activity/vote/new") 马上制作
+        .reminder(v-if="reminded")
+          a.reminder-link(href="http://mp.weixin.qq.com/s?__biz=MzI0MjM1OTIwNQ==&mid=100000031&idx=1&sn=206c5b8586a81ae36e6baf7022864203&scene=18#wechat_redirect") 我也要制作发布营销活动
+            i &raquo;
+            strong 商家岛
+          a.reminder-close(@click="toggleReminder", title="关闭") &times;
+
+  //- 空白提示
+  message(
+    title="该活动不存在或已删除",
+    v-if="!hasActivity",
+    :detail="{ link: { name: \'home\' }, text: '返回首页' }",
+  )

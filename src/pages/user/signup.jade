@@ -1,0 +1,47 @@
+script#signup(type="text/template")
+  form.container.signup(role="form", @submit="submit")
+    .weui_cells.weui_cells_form
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="text", name="organization", placeholder="请输入机构名称", required, v-model="organization")
+      .weui_cell.weui_cell_select
+        .weui_cell_bd.weui_cell_primary
+          select.weui_select(name="industry", v-model="industry")
+            option(value) 请选择所属行业
+            option(value="教育培训") 教育培训
+            option(value="餐饮美食") 餐饮美食
+            option(value="消费购物") 消费购物
+            option(value="生活服务") 生活服务
+            option(value="休闲娱乐") 休闲娱乐
+            option(value="美容美发") 美容美发
+            option(value="婚庆影楼") 婚庆影楼
+            option(value="运动健身") 运动健身
+            option(value="汽车美容") 汽车美容
+            option(value="家装设计") 家装设计
+            option(value="旅游景区") 旅游景区
+            option(value="其他") 其他
+    .weui_cells.weui_cells_form(v-el:location)
+      .weui_cell.weui_cell_select
+        .weui_cell_bd.weui_cell_primary
+          select.weui_select(name="province", data-province="请选择所在省份", v-model="province")
+      .weui_cell.weui_cell_select
+        .weui_cell_bd.weui_cell_primary
+          select.weui_select(name="city", data-city="请选择所在城市", v-model="city")
+    .weui_cells.weui_cells_form
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", placeholder="请输入手机号", title="请输入正确的手机号", required, v-model="mobile", v-el:mobile)
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="number", name="verify_code", pattern="^[0-9]{4,6}$", placeholder="请输入验证码", title="请输入正确的验证码", autocomplete="off", required, v-model="verify_code")
+        .weui_cell_ft
+          button.weui_btn.weui_btn_mini.weui_btn_default(type="button", @click="sendCaptcha") 获取验证码
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="password", name="password", pattern="^\\S{6,20}$", placeholder="请设置6-20位的新密码", title="密码最少6位，最多20位，不能包含空格", required, v-model="password")
+    .weui_btn_area
+      button.weui_btn.weui_btn_primary(type="submit") 注册
+      a.weui_btn.weui_btn_default(v-link="{ name: 'signin' }") 返回登录
+    //- .weui_cells_tips
+    //-   p.float-right 已经有账号？
+    //-     a.text-muted(v-link="{ name: 'signin' }") 立即登录

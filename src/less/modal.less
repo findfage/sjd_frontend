@@ -1,0 +1,62 @@
+// Modal
+// --------------------------------------------------
+
+.modal {
+  position: fixed;
+  z-index: @zindex-modal;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+
+  background-color: fade(#000, 50%);
+
+  &.out {
+    z-index: -1;
+  }
+
+  &.in {
+    z-index: @zindex-modal;
+  }
+}
+
+.modal-content {
+  position: relative;
+
+  flex-grow: 1;
+  margin: unit(16 / @root, rem);
+
+  background-color: #fff;
+  border-radius: @border-radius;
+  box-shadow: 1px 1px 3px fade(#000, 50%);
+}
+
+.modal-close {
+  font-size: unit(24 / @root, rem);
+  line-height: 1;
+
+  position: absolute;
+  top: unit(8 / @root, rem);
+  right: unit(8 / @root, rem);
+
+  width: unit(24 / @root, rem);
+  height: unit(24 / @root, rem);
+
+  color: #fff;
+  background-color: transparent;
+  border-width: 0;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  padding: unit(16 / @root, rem);
+}

@@ -1,0 +1,59 @@
+// Activities
+// --------------------------------------------------
+
+.activities {
+  .header {
+    border-bottom: @border;
+
+    a + a {
+      margin-left: unit(8 / @root, rem);
+    }
+  }
+
+  .weui_panel_ft {
+    display: table;
+
+    width: 100%;
+
+    text-align: center;
+
+    > a {
+      display: table-cell;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+
+  .weui_media_hd {
+    background-color: @gray-lightest;
+  }
+
+  .weui_media_bd {
+    small {
+      color: @gray;
+    }
+  }
+
+  .weui_media_title {
+    margin-bottom: unit(4 / @root, rem);
+  }
+
+  .weui_media_desc {
+    margin-bottom: 0;
+    -webkit-line-clamp: 1;
+  }
+
+  .weui_actionsheet_cell {
+    display: block;
+  }
+
+  .footer {
+    min-height: unit(100 / @root, rem);
+  }
+}

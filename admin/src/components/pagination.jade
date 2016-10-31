@@ -1,0 +1,4 @@
+script#pagination(type="text/template")
+  nav.pagination(v-if="total")
+    a.pagination__link(v-for="link in links", :class="{ 'is-active': link.active, 'is-disabled': link.disabled }", v-link="link.link")
+      span(:class="{ 'material-icons': link.icon }") {{ link.text }}

@@ -1,0 +1,112 @@
+script#group-editor(type="text/template")
+  form.container.activity.activity-editor.group.group-editor(role="form", @submit="submit")
+    header.header
+      nav.menu
+        a.small(v-link="{ name: 'activities' }") 个人中心
+        a.small(v-link="{ name: 'group' }", v-if="activity.id") 取消编辑
+
+    .main
+      //- Banner
+      .banner
+        .banner-header
+          img(src="images/group/banner.jpg")
+        .banner-body
+          h1.title
+            textarea.dashed.reverse(name="title", placeholder="请输入活动标题", rows="3", maxlength="30", required, v-model="activity.title", v-if="editable")
+            template(v-else) {{ activity.title }}
+        .banner-footer
+          p.date 活动时间：
+            input.dashed.reverse.start-date(type="text", value="{{ activity.start_time | formatDate }}", placeholder="开始时间", maxlength="16", required, v-show="editable")
+            time(title="开始时间", v-show="!editable") {{ activity.start_time | formatDate }}
+            span 到
+            input.dashed.reverse.end-date(type="text", value="{{ activity.end_time | formatDate }}", placeholder="结束时间", maxlength="16", required, v-show="editable")
+            time(title="结束时间", v-show="!editable") {{ activity.end_time | formatDate }}
+          p.note(v-if="editable") （建议活动时间5~7天）
+
+      //- 商品描述
+      .card.goods
+        .card-header
+          .card-title 商品描述
+        .card-body
+          h6
+            textarea.dashed(placeholder="请输入商品描述", rows="3", required, v-if="editable", v-model="activity.prizes.text", lazy)
+            template(v-else) {{{ activity.prizes.text | formatText }}}
+          uploader(
+            v-if="activated",
+            :error="prize.uploader.error",
+            :images="prize.uploader.images",
+            description="（请上传 1 张商品图片，不上传则不显示）",
+            :preview="!editable",
+            :success="prize.uploader.success"
+          )
+          .info
+            h6.price 原价：
+              strong
+                input.dashed(type="number", min="1", max="9999999", required, v-if="editable && !locked", v-model="activity.prizes.price", lazy, number)
+                template(v-else) {{ activity.prizes.price }}
+                | 元
+
+            p.deposit 参与拼团需预付：
+              strong
+                input.dashed(type="number", min="1", max="9999999", required, v-if="editable && !locked", v-model="activity.prizes.prepaid", lazy, number)
+                template(v-else) {{ activity.prizes.prepaid }}
+                | 元
+              small （建议预付款不高于10元，因为提现时要扣10%手续费）
+            ul.groups
+              li(v-for="group in activity.prizes.groups")
+                span
+                  input.dashed(type="number", min="1", max="9999999", required, v-if="editable && !locked", v-model="group.limit", lazy, number)
+                  template(v-else) {{ group.limit }}
+                  | 人团
+                span 拼团价：
+                  input.dashed.reverse(type="number", min="1", max="9999999", required, v-if="editable && !locked", v-model="group.price", lazy, number)
+                  template(v-else) {{ group.price }}
+                  | 元/人
+                  button(type="button", aria-label="删除", title="删除", v-show="editable && !locked && activity.prizes.groups.length > 1", @click="removeGroup($index)") &times;
+          .card-footer(v-if="editable && !locked")
+            button.weui_btn.weui_btn_primary(type="button", v-show="activity.prizes.groups.length < 3", @click="addGroup") 添加
+            p.note 你可以设置多组团，最多设置<b>3</b>组，拼团人数应该逐渐增多，拼团价应逐渐减小，请认真设置，有人参团后不可修改。建议3人拼团价=原价×30%，5人拼团价=原价×20%，8人拼团价=原价×10%。
+
+      //- 领取信息
+      .card.accept
+        .card-header
+          .card-title 领取信息
+        .card-body
+          textarea.dashed(name="receive_info", placeholder="请输入领取信息", rows="4", maxlength="1000", required, v-model="activity.receive_info", v-if="editable")
+          template(v-else) {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          .card-title 机构介绍
+        .card-body
+          p
+            textarea.dashed(name="host_info", placeholder="此处填写机构介绍，最多1000字，如果不填则不显示", rows="8", maxlength="1000", v-model="activity.host_info", v-if="editable")
+            template(v-else) {{{ activity.host_info | formatText }}}
+          uploader(
+            v-if="activated",
+            :error="intro.uploader.error",
+            :images="intro.uploader.images",
+            :maxlength="10",
+            description="（最多上传 10 张图片，不上传则不显示）",
+            :preview="!editable",
+            :success="intro.uploader.success"
+          )
+
+      //- 拼团玩法
+      .card.hotline
+        .card-header
+          h6.card-title 咨询电话
+        .card-body
+          i.fa.fa-phone
+          input.dashed(type="tel", name="mobile", placeholder="请输入手机号码", title="请输入正确的手机号", pattern="^1[34578]{1}[0-9]{9}$", required, v-if="editable", v-model="activity.prizes.mobile", lazy)
+          a(href="tel:{{ activity.prizes.mobile }}", v-else) {{ activity.prizes.mobile }}
+        .card-footer(v-if="editable") 客户可以通过此电话咨询拼团活动，建议留下手机号保持手机畅通。
+
+    footer.footer
+      .container.fixed
+        .grid
+          .cell-6
+            button.weui_btn.weui_btn_default(type="button", @click="toggle") {{ editable ? '预览活动' : '返回编辑'}}
+          .cell-6
+            button.weui_btn.weui_btn_primary(type="submit") 保存活动

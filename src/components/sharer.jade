@@ -1,0 +1,23 @@
+script#sharer(type="text/template")
+  .modal.fade.sharer(data-action="close", :class="{ in: sharing, out: !visible, shared: guiding }", @click="close")
+    .modal-content(role="document")
+      .modal-header
+        h6.modal-title 分享后朋友们看见的标题、图标和描述：
+        .share-title
+          input(type="text", name="title", value="{{ shareData.title }}", placeholder="分享标题", maxlength="32", @change="change")
+      .modal-body
+        .grid
+          .cell-4
+            label.share-image
+              input.visuallyhidden(type="file", @change="upload")
+              img(:src="shareData.imgUrl")
+              span 更换图标
+          .cell-8
+            .share-content
+              textarea(name="desc", rows="3", maxlength="64", placeholder="分享描述", @change="change") {{ shareData.desc }}
+      .modal-footer
+        .grid
+          .cell-6
+            button.weui_btn.weui_btn_default(type="button", data-action="close") 暂不分享
+          .cell-6
+            button.weui_btn.weui_btn_primary(type="button", @click="share") 立即分享

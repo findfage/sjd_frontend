@@ -1,0 +1,14 @@
+script#message(type="text/template")
+  .weui_msg_container
+    .weui_msg
+      .weui_icon_area
+        i.weui_icon_msg(:class="[type ? 'weui_icon_' + type : 'weui_icon_info']")
+      .weui_text_area
+        h2.weui_msg_title {{ title || '操作成功' }}
+        p.weui_msg_desc {{ content }}
+      .weui_opr_area
+        p.weui_btn_area
+          a.weui_btn.weui_btn_primary(v-if="primary", v-link="primary.link") {{ primary.text || '确定' }}
+          a.weui_btn.weui_btn_default(v-if="default", v-link="default.link") {{ default.text || '取消' }}
+      .weui_extra_area
+        a(v-if="detail", v-link="detail.link") {{ detail.text || '查看详情' }}

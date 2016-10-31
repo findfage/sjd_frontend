@@ -1,0 +1,10 @@
+script#dialog(type="text/template")
+  .weui_dialog_container(v-if="dialog", :class="[dialog.cancel ? 'weui_dialog_confirm' : 'weui_dialog_alert']")
+    .weui_mask
+    .weui_dialog
+      .weui_dialog_hd
+        strong.weui_dialog_title {{ dialog.title }}
+      .weui_dialog_bd {{ dialog.content }}
+      .weui_dialog_ft
+        a.weui_btn_dialog.default(@click="cancel", v-show="dialog.cancel") 取消
+        a.weui_btn_dialog.primary(@click="confirm", v-show="dialog.confirm") 确定

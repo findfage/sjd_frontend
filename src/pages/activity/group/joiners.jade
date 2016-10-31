@@ -1,0 +1,27 @@
+script#group-joiners(type="text/template")
+  .container.group-joiners
+    .main
+      .weui_cells_title 以下小伙伴正在发起拼团，你可以直接参加
+      .weui_cells
+        .weui_cell(v-for="group in groups")
+          .weui_cell_hd
+            i.fa.fa-users
+            | {{ group.leader_name }}
+          .weui_cell_bd.weui_cell_primary 已有<b>{{ group.joined_num }}</b>人参团
+            small （<b>{{ group.current_price | pricify }}</b>元/人）
+          .weui_cell_ft
+            a.weui_btn.weui_btn_mini.weui_btn_primary(v-link="{ name: 'group-joiner', params: { joinerId: group.id } }") 我要参团
+
+      //- 瀑布流加载器
+      waterfall-flow-loader(
+        v-if="loader",
+        :listrows="10",
+        :url="loader.url",
+        :params="loader.params",
+        :done="load"
+      )
+
+    .footer
+      .fixed
+        a.weui_btn.weui_btn_default(href="javascript:history.back();") 返回
+

@@ -1,0 +1,20 @@
+script#signin(type="text/template")
+  form.container.signin(role="form", @submit="submit")
+    .weui_cells.weui_cells_form
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", placeholder="请输入手机号", required, v-model="mobile")
+      .weui_cell
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input(type="password", name="password", pattern="^\\S{6,20}$", placeholder="请输入密码", required, v-model="password")
+    .weui_cells_tips
+      a.text-muted(v-link="{ name: 'reset-password' }") 忘记密码？
+    .weui_btn_area
+      button.weui_btn.weui_btn_primary(type="submit") 登录
+      //- a.weui_btn.weui_btn_default(v-link="{ name: 'signup' }") 注册账号
+    .weui_cells_tips
+      //- a.text-muted(v-link="{ name: 'reset-password' }") 忘记密码？
+      p 如需开通商家岛账号，请
+        a.text-muted(href="http://mp.weixin.qq.com/s?__biz=MzI0MjM1OTIwNQ==&mid=100000119&idx=1&sn=f5ad287c9c5750c1e9fa1b69c15bd39f&scene=20#wechat_redirect") 点击此处
+          i.fa.fa-angle-double-right
+

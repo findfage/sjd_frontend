@@ -1,0 +1,71 @@
+// Utilities
+// --------------------------------------------------
+
+
+// Hide visually and from screen readers
+
+.hidden {
+  display: none !important;
+}
+
+
+// Hide only visually, but have it available for screen readers:
+// http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+
+
+  // Extends the .visuallyhidden class to allow the element
+  // to be focusable when navigated to via the keyboard:
+  // https://www.drupal.org/node/897638
+
+  &.focusable:active,
+  &.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+  }
+}
+
+
+// Hide visually and from screen readers, but maintain layout
+
+.invisible {
+  visibility: hidden;
+}
+
+
+// Clearfix
+
+.clearfix {
+  .clearfix();
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.fade {
+  opacity: 0;
+
+  transition: opacity .3s ease;
+}
+
+.in {
+  opacity: 1;
+}

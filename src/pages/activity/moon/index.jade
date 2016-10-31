@@ -1,0 +1,153 @@
+script#moon(type="text/template")
+  .container.activity.moon(v-if="activity", :class="{ sample: activityId === 5 }")
+    header.header
+      nav.menu
+        a(v-link="{ name: 'complaint', params: { id: activityId }, query: { next: $route.path } }") 投诉
+        a.small(v-if="user", v-link="{ name: 'activities' }") 个人中心
+        a(v-if="user && user.id === activity.user_id", v-link="{ name: 'moon-editor' }") 编辑
+      ul.stats(v-if="statistics")
+        li
+          b {{ statistics.view_count }}
+          | 人查看
+        li
+          b {{ statistics.share_count }}
+          | 人分享
+        li
+          b {{ statistics.join_count }}
+          | 人报名
+
+    .main
+      //- Banner
+      .banner
+        .banner-header
+          img(src="images/moon/banner.jpg")
+          span.night-sky-moon.haloing.moon-1(:class="[moon, merged ? 'blinking' : '']")
+          span.night-sky-moon.moon-1(:class="{ initial: !active }")
+        .banner-body
+          h1.title {{ activity.title }}
+        .banner-footer
+          p.date 活动时间：
+            time(title="开始时间") {{ activity.start_time | formatDate }}
+            span 到
+            time(title="结束时间") {{ activity.end_time | formatDate }}
+          ul.carousel.completed-list(v-el:carousel, v-show="completedJoiners.total")
+            li.slide(v-for="joiner in completedJoiners.list", :class="[$index === 0 ? 'in' : '']") <b>{{ joiner.name }}</b> 于 {{ joiner.update_time | formatDate }} 成功赢奖
+
+      //- 活动状态
+      .card.status-bar
+        .grid
+          .cell-6(v-if="personal")
+            button.weui_btn.weui_btn_primary(type="button", @click="vote", :disabled="button.disabled", v-text="my.self ? '我要集月牙' : '帮TA集月牙'")
+          .cell-6(:class="{ 'cell-12': !personal }")
+            button.weui_btn.weui_btn_primary(type="button", v-if="button.disabled", disabled) {{ button.text }}
+            button.weui_btn.weui_btn_primary(type="button", @click="click", v-else) {{ button.text }}
+        .grid(v-if="personal")
+          .cell-6
+            p <b v-if="participant">{{ participant.name }}</b> 已有 <b>{{ participant.vote_count }}</b> 个月牙
+          .cell-6
+            p 还差 <b>{{ required }}</b> 个月牙
+
+      //- 奖项设置
+      .card.prizes
+        h5 本期奖品
+          span(v-if="activity.prizes.count") <b>{{ activity.prizes.count }}</b> 份 剩余 <b>{{ remainder }}</b> 份
+        p 活动时间内集齐 <b>{{ activity.prizes.limit }}</b> 个月牙唤出满月
+        p 即可 <b>{{ activity.prizes.text }}</b>
+        p(v-if="activity.prizes.image")
+          img(:src="activity.prizes.image | imagify 640w_2o")
+
+      //- 活动规则
+      .card.rules
+        .card-header
+          h5.card-title 活动规则
+        .card-body
+          p {{{ activity.rules | formatText }}}
+
+      //- 领奖信息
+      .card.accept
+        .card-header
+          h5.card-title 领奖信息
+        .card-body
+          p {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          h5.card-title 机构介绍
+        .card-body
+          p(v-if="activity.host_info") {{{ activity.host_info | formatText }}}
+          p(v-for="image in activity.host_img")
+            img(v-if="image", :src="image | imagify 640w_2o")
+
+      //- 排行榜
+      .card.ranking-list
+        .card-header
+          h5.card-title 排行榜
+        .card-body
+          table
+            thead
+              tr
+                th 排名
+                th 姓名
+                th 月牙数
+                th 完成时间
+            tbody(v-if="joiners.length")
+              tr(v-for="joiner in joiners")
+                td {{ joiner.ranking }}
+                td {{ joiner.name }}
+                td
+                  span(v-if="joiner.vote_count === activity.prizes.limit") 已完成
+                  span(v-else) {{ joiner.vote_count }}
+                td
+                  small(v-if="joiner.vote_count === activity.prizes.limit") {{ joiner.update_time | formatDate }}
+            tbody(v-else)
+              tr
+                td(colspan="4") 暂无数据
+          waterfall-flow-loader(v-if="loader", :url="loader.url", :param="loader.params", :listrows="30", :done="load")
+
+      //- 对话框：参加
+      .modal.fade.modal-join(:class="{ in: joining, out: !visible }")
+        form.modal-content(role="form", @submit="join")
+          .modal-header
+            button.modal-close(type="button", @click="close('joining')") &times;
+          .modal-body
+            fieldset.grid
+              label.cell-3(for="inputName") 姓名
+              .cell-9
+                input#inputName(type="text", name="name", placeholder="请输入您的真实姓名", required, v-model="newJoiner.name")
+            fieldset.grid
+              label.cell-3(for="inputMobile") 手机
+              .cell-9
+                input#inputMobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", title="请输入正确的手机号", placeholder="请输入您的手机号码", required, v-model="newJoiner.mobile")
+          .modal-footer
+            button.weui_btn.weui_btn_primary(type="submit") 提交
+
+      //- 分享器
+      sharer(
+        v-if="sharer",
+        v-ref:sharer,
+        :auto-share="sharer.autoShare",
+        :auto-show="sharer.autoShow",
+        :data="sharer.data",
+        :desc="sharer.desc",
+        :img-url="sharer.imgUrl",
+        :link="sharer.link",
+        :title="sharer.title",
+      )
+
+    footer.footer
+      .footer-content.fixed
+        .action-bar
+          a(href="#!/activity/moon/new") 马上制作
+        .reminder(v-if="reminded")
+          a.reminder-link(href="http://mp.weixin.qq.com/s?__biz=MzI0MjM1OTIwNQ==&mid=100000031&idx=1&sn=206c5b8586a81ae36e6baf7022864203&scene=18#wechat_redirect") 我也要制作发布营销活动
+            i &raquo;
+            strong 商家岛
+          a.reminder-close(@click="toggleReminder", title="关闭") &times;
+
+  //- 空白提示
+  message(
+    title="该活动不存在或已删除",
+    v-if="!hasActivity",
+    :detail="{ link: { name: \'home\' }, text: '返回首页' }",
+  )

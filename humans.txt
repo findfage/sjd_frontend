@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Felix -- Frontend Developer
+
+# THANKS
+
+    Zach -- PHP Developer
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5, ECMAScript 6, ECMAScript 2015
+    jQuery, Font Awesome, WeUI, Webpack, Babel
+    Vue, Vuex, Vue Router, Vue Resource

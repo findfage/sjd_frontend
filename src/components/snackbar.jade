@@ -1,0 +1,4 @@
+script#snackbar(type="text/template")
+  .snackbar(:class="['snackbar--' + color, message ? 'snackbar--active' : '']", aria-hidden="{{ message ? 'false' : 'true' }}")
+    .snackbar__text {{{ message }}}
+    button.snackbar__action(type="button", aria-hidden="{{ actionText ? 'false' : 'true' }}", @click="click") {{ actionText }}

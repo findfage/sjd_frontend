@@ -1,0 +1,37 @@
+// Categories
+// --------------------------------------------------
+
+.categories {
+  .tools  {
+    list-style: none;
+  }
+
+  .tool {
+    margin-bottom: unit(16 / @root, rem);
+    padding: unit(16 / @root, rem);
+
+    background-color: #fff;
+  }
+
+  .tool-name {
+    > small {
+      font-size: unit(10 / @root, rem);
+
+      margin-left: unit(4 / @root, rem);
+      padding: unit(1 / @root, rem) unit(4 / @root, rem);
+
+      color: #fff;
+      background-color: @red;
+      border-radius: @border-radius;
+      vertical-align: middle;
+    }
+  }
+
+  .tool-desc {
+    color: @gray-dark;
+  }
+
+  .tool-btns {
+    margin-top: unit(16 / @root, rem);
+  }
+}

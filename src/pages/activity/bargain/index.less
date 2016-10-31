@@ -1,0 +1,317 @@
+.bargain {
+  @brand: #1f7a9b;
+  @images: "../images/bargain/";
+
+  color: #fff;
+  background-color: #00b0f0;
+  background-image: linear-gradient(to bottom, #fff 0, #00b0f0 50%, #00b0f0 100%);
+
+  b,
+  strong {
+    font-weight: normal;
+
+    margin-left: unit(2 / @root, rem);
+    margin-right: unit(2 / @root, rem);
+
+    color: @red;
+  }
+
+  .banner {
+    position: relative;
+
+    overflow: hidden;
+
+    color: @brand;
+    text-align: center;
+
+    .banner-header {
+      > img {
+        display: block;
+      }
+    }
+
+    .banner-body,
+    .banner-footer {
+      position: absolute;
+      right: 0;
+      left: 0;
+    }
+
+    .banner-body {
+      top: unit(16 / @root, rem);
+      bottom: unit(48 / @root, rem);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      padding: unit(16 / @root, rem);
+    }
+
+    .banner-footer {
+      bottom: 0;
+
+      padding: unit(8 / @root, rem) unit(16 / @root, rem);
+    }
+
+    .date {
+      > time {
+        color: @red;
+      }
+    }
+
+    .countdown {
+      b {
+        font-size: unit(18 / @root, rem);
+      }
+    }
+
+    .completed-list {
+      overflow: hidden;
+
+      height: unit(24 / @root, rem);
+
+      list-style: none;
+
+      > li {
+        font-size: unit(14 / @root, rem);
+        line-height: unit(16 / @root, rem);
+
+        width: 100%;
+        padding: unit(4 / @root, rem) unit(16 / @root, rem);
+        color: lighten(@brand, 10%);
+      }
+    }
+  }
+
+  .status-bar {
+    color: @brand;
+    background-color: #f3fbfe !important;
+
+    .grid {
+      margin-left: unit(-8 / @root, rem);
+      margin-right: unit(-8 / @root, rem);
+      padding: 0;
+    }
+
+    .prices {
+      h5 {
+        font-size: unit(18 / @root, rem);
+      }
+
+      p {
+        font-size: unit(14 / @root, rem);
+
+        margin-bottom: 0;
+      }
+
+      b {
+        display: inline-block;
+      }
+
+      > :last-child {
+        text-align: right;
+      }
+    }
+
+    .actions {
+      margin-top: unit(8 / @root, rem);
+      margin-bottom: unit(16 / @root, rem);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .ranking-list {
+    table {
+      th {
+        color: @yellow;
+      }
+
+      td {
+        text-align: center;
+
+        small {
+          font-size: unit(10 / @root, rem);
+          line-height: 1;
+
+          display: block;
+
+          color: @gray-lightest;
+        }
+      }
+    }
+
+    .waterfall-flow-loader {
+      color: #fff;
+    }
+  }
+
+
+  // Components
+  // -------------------------
+
+  .weui_btn_primary {
+    background-color: @blue;
+
+    &:focus {
+      background-color: darken(@blue, 10%);
+    }
+  }
+
+  .card {
+    margin: unit(16 / @root, rem);
+    padding: unit(16 / @root, rem);
+
+    background-color: #00a7e4;
+    border-radius: @border-radius;
+
+    .card-title {
+      line-height: unit(30 / @root, rem);
+
+      margin-left: unit(-24 / @root, rem);
+
+      width: unit(88 / @root, rem);
+      height: unit(44 / @root, rem);
+      padding: 0 unit(8 / @root, rem);
+
+      color: #d65e29;
+      background-image: url("@{images}ribbon.png");
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      text-align: center;
+    }
+
+    .card-body {
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .button {
+    font-size: unit(18 / @root, rem);
+
+    width: 100%;
+    padding: unit(8 / @root, rem) unit(16 / @root, rem);
+
+    color: @brand;
+    background-color: transparent;
+    border: 1px solid @brand;
+    border-radius: unit(22 / @root, rem);
+  }
+
+  .modal-join {
+    .modal-content {
+      background-color: #00a7e4;
+    }
+
+    fieldset {
+      border-width: 0;
+
+      label {
+        font-size: unit(24 / @root, rem);
+
+        padding-top: unit(5 / @root, rem);
+        padding-right: 0;
+      }
+
+      input {
+        font-size: unit(16 / @root, rem);
+
+        width: 100%;
+        padding: unit(11 / @root, rem) unit(16 / @root, rem);
+
+        border: unit(1 / @root, rem) solid #00a7e4;
+        border-radius: unit(5 / @root, rem);
+
+        &:focus {
+          border-color: darken(#00a7e4, 10%);
+          box-shadow: 0 0 unit(2 / @root, rem) darken(#00a7e4, 10%);
+          outline: none;
+        }
+      }
+    }
+
+    .button {
+      color: #fff;
+      border-color: #fff;
+      border-style: solid;
+    }
+  }
+
+  .modal-halo {
+    @keyframes haloRotating {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    &.in::before {
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: 50%;
+
+      width: unit(360 / @root, rem);
+      height: unit(360 / @root, rem);
+      margin-top: unit(-180 / @root, rem);
+      margin-left: unit(-180 / @root, rem);
+
+      content: ' ';
+      animation: haloRotating 5s infinite linear;
+
+      border-radius: 50%;
+      background: url('@{images}halo.png') no-repeat center center;
+      background-size: 100% 100%;
+    }
+
+
+    .modal-content {
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    .modal-body {
+      position: relative;
+
+      margin-right: auto;
+      margin-left: auto;
+      width: unit(180 / @root, rem);
+      height: unit(180 / @root, rem);
+
+      color: #fff;
+      background-color: #ebe957;
+      border-radius: 50%;
+    }
+
+    .modal-block {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      display: block;
+      width: 100%;
+
+      transform: translate(-50%, -50%);
+      text-align: center;
+
+      > span,
+      > strong {
+        display: block;
+      }
+
+      > strong {
+        font-size: unit(40 / @root, rem);
+
+        color: @red;
+      }
+    }
+  }
+}

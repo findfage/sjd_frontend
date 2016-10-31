@@ -1,0 +1,43 @@
+// Pagination
+// --------------------------------------------------
+
+.pagination {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.pagination__link {
+  line-height: 24px;
+  display: inline-block;
+
+  height: 24px;
+  min-width: 24px;
+  padding: 4px;
+
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+
+  &:hover,
+  &:focus {
+    background-color: #eee;
+  }
+
+  &.is-active {
+    font-weight: bold;
+
+    cursor: default;
+
+    color: @color;
+    background-color: transparent;
+  }
+
+
+  &.is-disabled {
+    cursor: default;
+
+    color: @gray-light;
+    background-color: transparent;
+  }
+}

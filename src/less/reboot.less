@@ -1,0 +1,104 @@
+// Reboot
+// --------------------------------------------------
+
+html {
+  font-size: @font-size;
+
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+
+  &:before,
+  &:after {
+    box-sizing: inherit;
+  }
+}
+
+body {
+  font-size: inherit;
+  font-family: @font-family;
+  line-height: @line-height;
+
+  color: @color;
+  background-color: @background-color;
+}
+
+a {
+  color: darken(@blue, 10%);
+
+  &:focus,
+  &:hover {
+    color: darken(@blue, 15%);
+  }
+}
+
+a,
+button {
+  &.disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: .65;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+
+  margin-bottom: unit(8 / @root, rem);
+
+  color: inherit;
+}
+
+h1 {
+  font-size: @font-size-h1;
+}
+
+h2 {
+  font-size: @font-size-h2;
+}
+
+h3 {
+  font-size: @font-size-h3;
+}
+
+h4 {
+  font-size: @font-size-h4;
+}
+
+h5 {
+  font-size: @font-size-h5;
+}
+
+h6 {
+  font-size: @font-size-h6;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: unit(16 / @root, rem);
+}
+
+hr {
+  margin-top: unit(16 / @root, rem);
+  margin-bottom: unit(16 / @root, rem);
+  border: 0;
+  border-top: @border;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+}

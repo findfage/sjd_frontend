@@ -1,0 +1,176 @@
+script#group(type="text/template")
+  .container.activity.group(v-if="activity", :class="{ sample: activityId === 4 }")
+    header.header
+      nav.menu
+        a(v-link="{ name: 'complaint', params: { id: activityId }, query: { next: $route.path } }") 投诉
+        a.small(v-if="user", v-link="{ name: 'activities' }") 个人中心
+        a(v-if="user && user.id === activity.user_id", v-link="{ name: 'group-editor' }") 编辑
+      ul.stats(v-if="statistics")
+        li
+          b {{ statistics.view_count }}
+          | 人查看
+        li
+          b {{ statistics.share_count }}
+          | 人分享
+        li
+          b {{ statistics.join_count }}
+          | 人报名
+
+    .main
+      //- Banner
+      .banner
+        .banner-header
+          img(src="images/group/banner.jpg", alt="全民拼团")
+        .banner-body
+          h1.title {{ activity.title }}
+        .banner-footer
+          p.date.visuallyhidden 活动时间：
+            time(title="开始时间") {{ activity.start_time | formatDate }}
+            span 到
+            time(title="结束时间") {{ activity.end_time | formatDate }}
+          .countdown(data-date="{{ countdown.time }}", v-el:countdown) 活动<b>{{ countdown.text }}</b>倒计时<b data-days></b>天<b data-hours></b>时<b data-minutes></b>分<b data-seconds></b>秒
+
+      //- 拼团玩法
+      .card.guide
+        .card-header
+          h6.card-title 拼团玩法
+          .card-menu
+            a(v-link="{ name: 'group-guide' }") 查看详情
+              i.fa.fa-angle-right
+        .card-body
+          ol
+            li <span>1</span> 支付开团<br>或参加团
+            li <span>2</span> 邀请好友<br>支付参团
+            li <span>3</span> 达到人数<br>团购成功
+
+      //- 商品描述
+      .card.goods
+        //- .card-header
+        //-   h6.card-title 商品描述
+        .card-body
+          h6 {{{ activity.prizes.text | formatText }}}
+          p(v-if="activity.prizes.image")
+            img(:src="activity.prizes.image | imagify 640w_2o")
+          .info
+            h6.price 原价：
+              strong {{ activity.prizes.price | pricify }}元
+            p.prepaid 参与拼团需预付：
+              strong {{ activity.prizes.prepaid | pricify }}元
+            ul.groups
+              li(v-for="group in activity.prizes.groups")
+                span <b>{{ group.limit }}</b>人团
+                span 拼团价：{{ group.price | pricify }}元/人
+
+      //- 当前团
+      .card.current-group(v-if="personal && myGroup")
+        .card-header
+          h5.card-title <b>{{ myGroup.leader_name }}</b>邀你来拼团啦！已有<b>{{ myGroup.joined_num }}</b>人，盼你如南方人盼暖气～
+        .card-body
+          ul
+            li
+              i 团长
+              span {{ myGroup.leader_name }}
+              small 于 {{ myGroup.create_time | formatDate }} 开团
+            li(v-for="joiner in myGroup.joiners")
+              i 团员
+              span {{ joiner.name }}
+              small 于 {{ joiner.time | formatDate }} 参团
+            li.invited(v-if="!completed")
+              i ？
+              span 就差你啦，让小伙伴们都来拼团吧！
+
+      //- 其他团
+      .card.other-groups(v-if="!my.self")
+        .card-header
+          h6.card-title 以下小伙伴正在发起拼团，你可以直接参加
+        .card-body
+          ul(v-if="groups.length")
+            li(v-for="group in groups") {{ group.leader_name }}
+              span （<b>{{ group.joined_num }}</b>人已参团 <b>{{ group.current_price | pricify }}</b>元/人）
+              a(v-link="{ name: 'group-joiner', params: { joinerId: group.id }}") 我要参团
+                i.fa.fa-angle-right
+          p(v-else) 还没有人开团哦！马上发送给好友开团吧！
+        .card-footer
+          a.weui_btn.weui_btn_mini.weui_btn_plain_default(v-if="groups.length", v-link="{ name: 'group-joiners' }") 查看更多
+            i.fa.fa-angle-right
+          a.weui_btn.weui_btn_mini.weui_btn_plain_default(v-else, @click="showSharer") 发送给好友开团
+
+      //- 开团
+      .card.create-group(v-if="!personal")
+        p 你可以参团购买，也可以自己开团
+        button.weui_btn.weui_btn_primary(type="button", v-if="button.disabled", disabled) {{ button.text }}
+        button.weui_btn.weui_btn_primary(type="button", data-action="open", @click="click", v-else) {{ button.text }}
+
+      //- 领取信息
+      .card.accept
+        .card-header
+          h6.card-title 领取信息
+        .card-body
+          p {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          h6.card-title 机构介绍
+        .card-body
+          p(v-if="activity.host_info") {{{ activity.host_info | formatText }}}
+          p(v-for="image in activity.host_img")
+            img(v-if="image", :src="image | imagify 640w_2o")
+
+      //- 对话框：参加
+      .modal.fade.modal-join(:class="{ in: joining, out: !visible }")
+        form.modal-content(role="form", @submit="join")
+          .modal-header
+            button.modal-close(type="button", @click="close('joining')") &times;
+          .modal-body
+            fieldset.grid
+              label.cell-3(for="inputName") 姓名
+              .cell-9
+                input#inputName(type="text", name="name", placeholder="请输入您的真实姓名", required, v-model="newJoiner.name")
+            fieldset.grid
+              label.cell-3(for="inputMobile") 手机
+              .cell-9
+                input#inputMobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", title="请输入正确的手机号", placeholder="请输入您的手机号码", required, v-model="newJoiner.mobile")
+          .modal-footer
+            button.weui_btn.weui_btn_primary(type="submit") 提交
+
+      //- 分享器
+      sharer(
+        v-if="sharer",
+        v-ref:sharer,
+        :auto-share="sharer.autoShare",
+        :auto-show="sharer.autoShow",
+        :data="sharer.data",
+        :desc="sharer.desc",
+        :img-url="sharer.imgUrl",
+        :link="sharer.link",
+        :title="sharer.title",
+      )
+
+    footer.footer
+      .footer-content.fixed
+        .actions
+          a(href="tel:{{ activity.prizes.mobile }}")
+            i.fa.fa-phone
+            | 咨询
+          template(v-if="personal && !completed && !my.self && !my.joinerId")
+            a.open(v-if="button.disabled", disabled) {{ button.text }}
+            a.open(data-action="open", v-else, @click="click")
+              | {{ button.text }}
+          a(v-if="footerButton.disabled", disabled) {{ footerButton.text }}
+          a(v-else, @click="click")
+            | {{ footerButton.text }}
+        .action-bar
+          a(href="#!/activity/group/new") 马上制作
+        .reminder(v-if="reminded")
+          a.reminder-link(href="http://mp.weixin.qq.com/s?__biz=MzI0MjM1OTIwNQ==&mid=100000031&idx=1&sn=206c5b8586a81ae36e6baf7022864203&scene=18#wechat_redirect") 我也要制作发布营销活动
+            i &raquo;
+            strong 商家岛
+          a.reminder-close(@click="toggleReminder", title="关闭") &times;
+
+  //- 空白提示
+  message(
+    title="该活动不存在或已删除",
+    v-if="!hasActivity",
+    :detail="{ link: { name: \'home\' }, text: '返回首页' }",
+  )

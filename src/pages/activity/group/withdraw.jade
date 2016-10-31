@@ -1,0 +1,20 @@
+script#group-withdraw(type="text/template")
+  form.container.group-withdraw(role="form", @submit="submit")
+    .weui_cells_title 您本次提现金额<b>{{ $route.query.amount | pricify }}</b>元
+    .weui_cells_tips 提现金额将转账到您的微信零钱，请确认是在本人的微信号中进行提现操作。（<a @click="showRules">点此查看提现规则</a>）
+    .weui_cells.weui_cells_form
+      .weui_cell
+        .weui_cell_bd
+          label.weui_label(for="mobile") 手机号
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input#mobile(type="tel", name="mobile", value="{{ user.mobile }}" required, readonly)
+      .weui_cell
+        .weui_cell_bd
+          label.weui_label(for="captcha") 验证码
+        .weui_cell_bd.weui_cell_primary
+          input.weui_input#captcha(type="number", name="code", pattern="^[0-9]{4,6}$", placeholder="请输入验证码", title="请输入正确的验证码", autocomplete="off", required, v-model="code")
+        .weui_cell_ft
+          button.weui_btn.weui_btn_mini.weui_btn_default(type="button", @click="sendCaptcha") 获取验证码
+    .weui_btn_area
+      button.weui_btn.weui_btn_primary(type="submit") 确认提现
+

@@ -1,0 +1,250 @@
+// Nation Day
+// --------------------------------------------------
+
+.nation {
+  @main-color: #da0042;
+  @images: "../images/nation/";
+
+  color: #fff;
+  background-color: @main-color;
+
+  b {
+    font-weight: normal;
+
+    margin-left: unit(2 / @root, rem);
+    margin-right: unit(2 / @root, rem);
+
+    color: @yellow;
+  }
+
+  .weui_btn_primary {
+    background-color: @orange;
+
+    &:focus {
+      background-color: darken(@orange, 10%);
+    }
+  }
+
+  .card {
+    margin-top: unit(16 / @root, rem);
+    margin-bottom: unit(16 / @root, rem);
+    padding: unit(16 / @root, rem);
+
+    background-color: lighten(@main-color, 5%);
+
+    .card-title {
+      font-size: unit(18 / @root, rem);
+
+      position: relative;
+      padding-bottom: unit(8 / @root, rem);
+
+      color: @yellow;
+
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        content: " ";
+
+        height: 1px;
+        width: 1em;
+
+        background-color: @gray-lighter;
+      }
+    }
+  }
+
+  .banner {
+    @banner: "@{images}banner.jpg";
+    @banner-width: image-width(@banner) / 2;
+    @banner-height: image-height(@banner) / 2;
+
+    position: relative;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    .banner-header {
+      position: relative;
+
+      > img {
+        display: block;
+      }
+
+      > span {
+        font-size: 0;
+
+        position: absolute;
+
+        display: block;
+
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+      }
+
+      > .nation-day-word {
+        @image: "@{images}word.png";
+        @width: image-width(@image) / 2;
+        @height: image-height(@image) / 2;
+
+        top: unit(99 / @root, rem);
+        left: 50%;
+
+        width: unit(@width / @root, rem);
+        height: unit(@height / @root, rem);
+        margin-left: unit(-(@width / 2) / @root, rem);
+
+        &.initial {
+          background-image: url(@image);
+        }
+
+        &.word-1 {
+          background-image: url("@{images}word-1.png");
+        }
+
+        &.word-2 {
+          background-image: url("@{images}word-2.png");
+        }
+
+        &.word-3 {
+          background-image: url("@{images}word-3.png");
+        }
+
+        &.word-4 {
+          background-image: url("@{images}word-4.png");
+        }
+
+        &.word-5 {
+          background-image: url("@{images}word-5.png");
+        }
+      }
+    }
+
+    .banner-body,
+    .banner-footer {
+      position: absolute;
+      right: 0;
+      left: 0;
+    }
+
+    .banner-body {
+      top: percentage(190 / @banner-height);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      min-height: percentage(180 / @banner-height);
+      padding: unit(16 / @root, rem);
+    }
+
+    .banner-footer {
+      bottom: 0;
+
+      padding: unit(4 / @root, rem);
+
+      background-color: darken(@main-color, 5%);
+    }
+
+    .completed-list {
+      font-size: unit(14 / @root, rem);
+      line-height: unit(20 / @root, rem);
+
+      overflow: hidden;
+
+      height: unit(20 / @root, rem);
+
+      list-style: none;
+
+      > li {
+        width: 100%;
+      }
+    }
+  }
+
+  .status-bar {
+    margin-top: 0;
+
+    text-align: center;
+
+    .grid + .grid {
+      margin-top: unit(8 / @root, rem);
+    }
+  }
+
+  .prizes {
+    text-align: center;
+
+    h5 {
+      font-size: unit(18 / @root, rem);
+
+      margin-top: unit(8 / @root, rem);
+      margin-bottom: unit(8 / @root, rem);
+    }
+
+    p {
+      margin-bottom: unit(8 / @root, rem);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .ranking-list {
+    table {
+      th {
+        color: @yellow;
+      }
+
+      td {
+        text-align: center;
+      }
+    }
+
+    .waterfall-flow-loader {
+      color: #fff;
+    }
+  }
+
+
+  // Components
+  // -------------------------
+
+  .modal-join {
+    .modal-close {
+      color: @gray;
+    }
+
+    fieldset {
+      border-width: 0;
+
+      label {
+        font-size: unit(24 / @root, rem);
+
+        padding-top: unit(5 / @root, rem);
+        padding-right: 0;
+
+        color: @color;
+      }
+
+      input {
+        font-size: unit(16 / @root, rem);
+
+        width: 100%;
+        padding: unit(11 / @root, rem) unit(16 / @root, rem);
+
+        border: unit(1 / @root, rem) solid @main-color;
+        border-radius: unit(5 / @root, rem);
+
+        &:focus {
+          border-color: darken(@main-color, 10%);
+          box-shadow: 0 0 unit(2 / @root, rem) darken(@main-color, 10%);
+          outline: none;
+        }
+      }
+    }
+  }
+}

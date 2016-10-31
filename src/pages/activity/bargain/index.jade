@@ -1,0 +1,182 @@
+script#bargain(type="text/template")
+  .container.activity.bargain(v-if="activity", :class="{ sample: activityId === 3 }")
+    header.header
+      nav.menu
+        a(v-link="{ name: 'complaint', params: { id: activityId }, query: { next: $route.path } }") 投诉
+        a.small(v-if="user", v-link="{ name: 'activities' }") 个人中心
+        a(v-if="user && user.id === activity.user_id", v-link="{ name: 'bargain-editor' }") 编辑
+      ul.stats(v-if="statistics")
+        li
+          b {{ statistics.view_count }}
+          | 人查看
+        li
+          b {{ statistics.share_count }}
+          | 人分享
+        li
+          b {{ statistics.join_count }}
+          | 人报名
+
+    .main
+      //- Banner
+      .banner
+        .banner-header
+          img(src="images/bargain/banner.jpg")
+        .banner-body
+          h1.title {{ activity.title }}
+        .banner-footer
+          p.date.visuallyhidden 活动时间：
+            time(title="开始时间") {{ activity.start_time | formatDate }}
+            span 到
+            time(title="结束时间") {{ activity.end_time | formatDate }}
+          .countdown(data-date="{{ countdown.time }}", v-el:countdown) 活动<b>{{ countdown.text }}</b>倒计时<b data-days></b>天<b data-hours></b>时<b data-minutes></b>分<b data-seconds></b>秒
+          ul.carousel.completed-list(v-el:carousel, v-show="completedJoiners.total")
+            li.slide(v-for="joiner in completedJoiners.list", :class="[$index === 0 ? 'in' : '']") <b>{{ joiner.name }}</b> 于 {{ joiner.update_time | formatDate }} 成功砍到底价
+
+      //- 活动状态
+      .card.status-bar
+        .card-body
+          .grid.prices(v-if="personal")
+            .cell-6
+              h5 {{ participant.name }}
+              p 当前排名：
+                b {{ participant.ranking }}
+              p 帮砍人数：
+                b {{ participant.vote_count }}
+            .cell-6
+              h5 现价：
+                b {{ participant.current_price | pricify }} 元
+              p 原价：
+                b {{ activity.prizes.original_price | pricify }} 元
+              p 底价：
+                b {{ activity.prizes.floor_price | pricify }} 元
+          .grid.prices(v-else)
+            .cell-6
+              h5 原价：
+                b {{ activity.prizes.original_price | pricify }}元
+            .cell-6
+              h5 底价：
+                b {{ activity.prizes.floor_price | pricify }}元
+          .grid.actions(v-if="personal && !my.self")
+            .cell-6
+              button.button(type="button", @click="vote", :disabled="button.disabled") 帮TA砍价
+            .cell-6
+              button.button(type="button", v-if="button.disabled", disabled) {{ button.text }}
+              button.button(type="button", @click="click", v-else) {{ button.text }}
+          .grid.actions(v-else)
+            .cell-12
+              button.button(type="button", v-if="button.disabled", disabled) {{ button.text }}
+              button.button(type="button", @click="click", v-else) {{ button.text }}
+          p(v-if="personal && activity.vote_count")
+            small 已有<b>{{ activity.vote_count }}</b>位亲友帮<b>{{ activity.name }}</b>砍价了，共砍掉<b>{{ cutted | pricify }}元</b>，想以最低价收入囊中，那就赶紧去找亲友拔刀相助！
+
+      //- 奖品描述
+      .card.prizes
+        .card-header
+          h6.card-title 奖品描述
+        .card-body
+          p {{{ activity.prizes.text | formatText }}}
+          p(v-if="activity.prizes.image")
+            img(:src="activity.prizes.image | imagify 640w_2o")
+
+      //- 活动规则
+      .card.rules
+        .card-header
+          h6.card-title 活动规则
+        .card-body
+          p {{{ activity.rules | formatText }}}
+
+      //- 领奖信息
+      .card.accept
+        .card-header
+          h6.card-title 领奖信息
+        .card-body
+          p {{{ activity.receive_info | formatText }}}
+
+      //- 机构介绍
+      .card.about
+        .card-header
+          h6.card-title 机构介绍
+        .card-body
+          p(v-if="activity.host_info") {{{ activity.host_info | formatText }}}
+          p(v-for="image in activity.host_img")
+            img(v-if="image", :src="image | imagify 640w_2o")
+
+      //- 排行榜
+      .card.ranking-list
+        .card-header
+          h6.card-title 排行榜
+        .card-body
+          table
+            thead
+              tr
+                th 排名
+                th 姓名
+                th 当前价格
+            tbody(v-if="joiners.length")
+              tr(v-for="joiner in joiners")
+                td {{ joiner.ranking }}
+                td {{ joiner.name }}
+                td
+                  span(v-if="joiner.current_price === activity.prizes.floor_price") 已砍到底价
+                    small （{{ joiner.update_time | formatDate }}）
+                  span(v-else) {{ joiner.current_price | pricify }}元
+            tbody(v-else)
+              tr
+                td(colspan="4") 暂无数据
+          waterfall-flow-loader(v-if="loader", :url="loader.url", :param="loader.params", :listrows="30", :done="load")
+
+      //- 对话框：参加
+      .modal.fade.modal-join(:class="{ in: joining, out: !visible }")
+        form.modal-content(role="form", @submit="join")
+          .modal-header
+            button.modal-close(type="button", @click="close('joining')") &times;
+          .modal-body
+            fieldset.grid
+              label.cell-3(for="inputName") 姓名
+              .cell-9
+                input#inputName(type="text", name="name", placeholder="请输入您的真实姓名", required, v-model="newJoiner.name")
+            fieldset.grid
+              label.cell-3(for="inputMobile") 手机
+              .cell-9
+                input#inputMobile(type="tel", name="mobile", pattern="^1[34578]{1}[0-9]{9}$", title="请输入正确的手机号", placeholder="请输入您的手机号码", required, v-model="newJoiner.mobile")
+          .modal-footer
+            button.button(type="submit") 提交
+
+      //- 砍价成功提示
+      .modal.fade.modal-halo(v-if="personal", :class="{ in: haloing, out: !visible }", @click="hideHalo")
+        .modal-content
+          .modal-body
+            .modal-block
+              span 恭喜你成功砍掉了
+              strong {{ cutted_price | pricify }}
+              span 元
+
+      //- 分享器
+      sharer(
+        v-if="sharer",
+        v-ref:sharer,
+        :auto-share="sharer.autoShare",
+        :auto-show="sharer.autoShow",
+        :data="sharer.data",
+        :desc="sharer.desc",
+        :img-url="sharer.imgUrl",
+        :link="sharer.link",
+        :title="sharer.title",
+      )
+
+    footer.footer
+      .footer-content.fixed
+        .action-bar
+          a(href="#!/activity/bargain/new") 马上制作
+        .reminder(v-if="reminded")
+          a.reminder-link(href="http://mp.weixin.qq.com/s?__biz=MzI0MjM1OTIwNQ==&mid=100000031&idx=1&sn=206c5b8586a81ae36e6baf7022864203&scene=18#wechat_redirect") 我也要制作发布营销活动
+            i &raquo;
+            strong 商家岛
+          a.reminder-close(@click="toggleReminder", title="关闭") &times;
+
+  //- 空白提示
+  message(
+    title="该活动不存在或已删除",
+    v-if="!hasActivity",
+    :detail="{ link: { name: \'home\' }, text: '返回首页' }",
+  )

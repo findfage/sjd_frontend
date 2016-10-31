@@ -1,0 +1,229 @@
+// Activity
+// --------------------------------------------------
+
+.activity {
+  img {
+    display: block;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+
+    th {
+      font-weight: normal;
+    }
+
+    td[colspan] {
+      text-align: center;
+    }
+  }
+
+  .header {
+    position: relative;
+    z-index: 10;
+
+    > .menu {
+      position: fixed;
+      top: unit(8 / @root, rem);
+      right: unit(8 / @root, rem);
+
+      > a {
+        font-size: unit(14 / @root, rem);
+        line-height: unit(32 / @root, rem);
+
+        display: block;
+        width: unit(40 / @root, rem);
+        height: unit(40 / @root, rem);
+        padding: unit(4 / @root, rem);
+
+        color: #fff;
+        background-color: fade(#000, 50%);
+        border-radius: 50%;
+        text-align: center;
+
+        + a {
+          margin-top: unit(8 / @root, rem);
+        }
+
+        &.small {
+          font-size: unit(12 / @root, rem);
+          line-height: unit(16 / @root, rem);
+        }
+      }
+    }
+
+    > .stats {
+      font-size: unit(14 / @root, rem);
+
+      position: absolute;
+      top: unit(8 / @root, rem);
+      left: unit(16 / @root, rem);
+
+      list-style: none;
+
+      > li {
+        display: inline;
+
+        color: #fff;
+        text-shadow: 0 0 unit(2 / @root, rem) @gray;
+
+        + li {
+          margin-left: unit(8 / @root, rem);
+        }
+
+        > b {
+          font-weight: normal;
+
+          color: @yellow;
+        }
+      }
+    }
+  }
+
+  .banner {
+    position: relative;
+
+    text-align: center;
+
+    .title {
+      font-size: unit(32 / @root, rem);
+
+      margin-top: 0;
+      margin-bottom: 0;
+
+      text-shadow: 0 0 unit(3 / @root, rem) fade(#fff, 20%);
+    }
+
+    .date {
+      font-size: unit(14 / @root, rem);
+
+      margin-bottom: 0;
+
+      > time {
+        font-size: unit(12 / @root, rem);
+
+        color: @yellow;
+      }
+
+      > span {
+        margin-right: unit(4 / @root, rem);
+        margin-left: unit(4 / @root, rem);
+      }
+    }
+  }
+
+  .card {
+    p {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .footer {
+    min-height: unit(40 / @root, rem);
+
+    .fixed {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      box-shadow: 0 0 3px fade(#000, 10%);
+    }
+
+    .action-bar {
+      display: none;
+      width: 100%;
+
+      background-color: #fff;
+
+      > a {
+        font-size: unit(18 / @root, rem);
+        line-height: unit(24 / @root, rem);
+
+        display: table-cell;
+        padding: unit(8 / @root, rem);
+
+        color: darken(@blue, 10%);
+        background-color: #f7f7f7;
+        text-align: center;
+        cursor: pointer;
+
+        &[disabled] {
+          cursor: not-allowed;
+        }
+
+        > i {
+          margin-right: unit(8 / @root, rem);
+        }
+      }
+    }
+
+    .reminder {
+      position: relative;
+
+      background-color: fade(#000, 50%);
+
+      .reminder-link {
+        display: block;
+        padding: unit(8 / @root, rem) unit(16 / @root, rem);
+
+        color: #fff;
+
+        > i {
+          font-style: normal;
+
+          margin-left: unit(8 / @root, rem);
+          margin-right: unit(8 / @root, rem);
+        }
+
+        > strong {
+          font-weight: normal;
+
+          color: @yellow;
+        }
+      }
+
+      .reminder-close {
+        font-size: unit(24 / @root, rem);
+        // line-height: unit(40 / @root, rem);
+
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        display: block;
+        min-width: unit(40 / @root, rem);
+
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+          background-color: fade(#000, 50%);
+        }
+      }
+    }
+  }
+
+  &.sample {
+    .footer {
+      .action-bar {
+        display: table;
+
+        > a {
+          color: #fff;
+          background-color: #04be02;
+        }
+      }
+
+      .reminder {
+        display: none;
+      }
+    }
+  }
+}

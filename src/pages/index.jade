@@ -1,0 +1,17 @@
+script#home(type="text/template")
+  .container.home
+    .full
+      header.header
+        nav(v-if="user")
+          a(v-link="{ name: 'activities' }") 个人中心
+        nav(v-else)
+          a(v-link="{ name: 'signin' }") 登录
+          //- a(v-link="{ name: 'signup' }") 注册
+      .main
+        .intro
+          h1 {{ site.title }}
+          p {{ site.description }}
+      footer.footer
+        .actions
+          a.weui_btn.weui_btn_primary(v-link="{ name: 'categories' }") 马上制作
+        .copyright 杭州空岛科技有限公司
